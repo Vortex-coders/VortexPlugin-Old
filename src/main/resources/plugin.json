@@ -1,0 +1,8 @@
+{
+  "name": "vortex-plugin",
+  "displayName": "Vortex Plugin",
+  "author": "lucin#0949",
+  "description": "A main plugin for vortex servers",
+  "version": "1.0.0",
+  "main": "org.ru.vortex.Vortex"
+}
