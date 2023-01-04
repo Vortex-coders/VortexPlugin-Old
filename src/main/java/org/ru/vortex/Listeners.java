@@ -97,7 +97,7 @@ public class Listeners {
                             );
                             case PayloadDrop -> Bundler.sendLocalized(
                                     player,
-                                    "history.block.payloaddrop",
+                                    "history.block.payload-drop",
                                     tileEntry.block().localizedName,
                                     player.name
                             );

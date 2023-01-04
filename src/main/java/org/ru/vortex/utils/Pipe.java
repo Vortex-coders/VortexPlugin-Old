@@ -2,6 +2,7 @@ package org.ru.vortex.utils;
 
 import lombok.SneakyThrows;
 
+@SuppressWarnings("unused")
 public class Pipe<A> {
 
     private A object;
@@ -28,7 +29,7 @@ public class Pipe<A> {
     }
 
     public <R> Pipe<R> pipe(ErrorableFunction<A, R> func) {
-        throwIfNotCatched();
+        throwIfNotCaught();
 
         try {
             return new Pipe<>(func.apply(object));
@@ -38,7 +39,7 @@ public class Pipe<A> {
     }
 
     public <R, B> Pipe<R> pipe(ErrorableBiFunction<A, B, R> func, B argObject1) {
-        throwIfNotCatched();
+        throwIfNotCaught();
 
         try {
             return new Pipe<>(func.apply(object, argObject1));
@@ -52,7 +53,7 @@ public class Pipe<A> {
             B argObject1,
             C argObject2
     ) {
-        throwIfNotCatched();
+        throwIfNotCaught();
 
         try {
             return new Pipe<>(func.apply(object, argObject1, argObject2));
@@ -67,7 +68,7 @@ public class Pipe<A> {
             C argObject2,
             D argObject3
     ) {
-        throwIfNotCatched();
+        throwIfNotCaught();
 
         try {
             return new Pipe<>(func.apply(object, argObject1, argObject2, argObject3));
@@ -77,7 +78,7 @@ public class Pipe<A> {
     }
 
     public Pipe<A> consume(ErrorableConsumer<A> consumer) {
-        throwIfNotCatched();
+        throwIfNotCaught();
 
         try {
             consumer.accept(object);
@@ -116,13 +117,13 @@ public class Pipe<A> {
     }
 
     public A result() {
-        throwIfNotCatched();
+        throwIfNotCaught();
 
         return object;
     }
 
     @SneakyThrows
-    private void throwIfNotCatched() {
+    private void throwIfNotCaught() {
         if (error != null) throw error;
     }
 
@@ -153,10 +154,10 @@ public class Pipe<A> {
 
     @FunctionalInterface
     public interface ErrorableSupplier<A> {
-        public A get() throws Throwable;
+        A get() throws Throwable;
     }
 
     public interface ErrorableRunnable {
-        public void run() throws Throwable;
+        void run() throws Throwable;
     }
 }

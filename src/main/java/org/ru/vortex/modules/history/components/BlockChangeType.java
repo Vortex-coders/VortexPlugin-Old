@@ -24,11 +24,11 @@ public enum BlockChangeType {
 
     BlockChangeType(
             Function<Block, Long> packageData,
-            Cons2<Block, Long> applyAditionalData
+            Cons2<Block, Long> applyAdditionalData
     ) {
         this.id = (byte) (StaticFields.lastID += 1);
         this.packageData = packageData;
-        this.applyAdditionalData = applyAditionalData;
+        this.applyAdditionalData = applyAdditionalData;
     }
 
     public static BlockChangeType getByID(byte id) {

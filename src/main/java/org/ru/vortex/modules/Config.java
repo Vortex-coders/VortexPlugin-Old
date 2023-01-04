@@ -13,9 +13,9 @@ import static org.ru.vortex.modules.Config.Gamemode.survival;
 
 public class Config {
 
-    public String mongoUrl = "";
     public String token = "";
     public String prefix = "";
+    public String mongoUrl = "";
     public String channelId = "";
     public String adminRoleId = "";
     public String adminChannelId = "";

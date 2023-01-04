@@ -29,7 +29,7 @@ public class Oauth {
      * @return boolean value of player's authorization
      */
     public static boolean isAuthorized(Player p) {
-        return getDISCORDID(p) != -1;
+        return getDiscordID(p) != -1;
     }
 
     /**
@@ -37,10 +37,10 @@ public class Oauth {
      *
      * @param p target player
      * @return ID of this player, -1 if not authorized
-     * @see #getDISCORDID(String)
+     * @see #getDiscordID(String)
      */
-    public static Long getDISCORDID(Player p) {
-        return getDISCORDID(p.uuid());
+    public static Long getDiscordID(Player p) {
+        return getDiscordID(p.uuid());
     }
 
     /**
@@ -49,7 +49,7 @@ public class Oauth {
      * @param uuid string(player uuid)
      * @return ID associated with this UUID, -1 if not authorized
      */
-    public static Long getDISCORDID(String uuid) {
+    public static Long getDiscordID(String uuid) {
         return Pipe.apply(Database.getPlayerData(uuid).block()).result().discord;
     }
 }

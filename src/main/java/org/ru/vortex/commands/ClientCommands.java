@@ -32,7 +32,7 @@ public class ClientCommands {
                     }
 
                     if (rtvVotes.contains(player.uuid())) {
-                        Bundler.sendLocalized(player, "commands.rtv.alreadyvoted");
+                        Bundler.sendLocalized(player, "commands.rtv.already-voted");
                         return;
                     }
 
