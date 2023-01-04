@@ -68,8 +68,14 @@ public class ClientCommands {
                 }
         );
 
-        register("login", (args, player) -> {
-        });
+        register(
+                "login",
+                (args, player) -> {
+                    if (player.admin) return;
+
+                    Bundler.sendLocalized(player, "commands.login.wait");
+                }
+        );
     }
 
     private static void register(String name, CommandRunner<Player> runner) {

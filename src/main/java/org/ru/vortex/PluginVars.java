@@ -1,9 +1,12 @@
 package org.ru.vortex;
 
 import arc.struct.IntIntMap;
+import arc.struct.OrderedMap;
 import arc.util.CommandHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import mindustry.net.Administration;
+import net.dv8tion.jda.api.entities.Message;
 import org.ru.vortex.modules.Config;
 
 import java.util.HashSet;
@@ -25,6 +28,7 @@ public class PluginVars {
             .disableHtmlEscaping()
             .create();
 
+    public static final OrderedMap<Message, Administration.PlayerInfo> loginWaiting = new OrderedMap<>();
     public static final String outlinePassword = "hentai";
     public static double rtvRatio = 0.6;
     public static HashSet<String> rtvVotes = new HashSet<>();

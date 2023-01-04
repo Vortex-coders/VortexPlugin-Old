@@ -39,6 +39,7 @@ public class Listeners {
                             });
                 }
         );
+
         Events.on(
                 EventType.GameOverEvent.class,
                 event -> {
