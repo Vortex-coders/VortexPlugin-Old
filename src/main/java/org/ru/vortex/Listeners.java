@@ -21,27 +21,43 @@ public class Listeners {
 
     public static void init() {
         Events.on(EventType.WorldLoadEvent.class, event -> History.initHistory());
-        Events.on(EventType.PlayerLeave.class, event -> {
-            Bot.updateStatus();
+        Events.on(
+                EventType.PlayerLeave.class,
+                event -> {
+                    Bot.updateStatus();
 
-            Database.getPlayerData(event.player).subscribe(data -> {
-                data.blocksBuilt += PluginVars.placedBlocksCache.get(event.player.id);
-                data.blocksBroken += PluginVars.brokenBlocksCache.get(event.player.id);
-                PluginVars.brokenBlocksCache.remove(event.player.id);
-                PluginVars.placedBlocksCache.remove(event.player.id);
-                Database.setPlayerData(data).block();
-            });
-        });
-        Events.on(EventType.GameOverEvent.class, event -> {
-            Bot.updateStatus();
+                    Database
+                            .getPlayerData(event.player)
+                            .subscribe(data -> {
+                                data.blocksBuilt +=
+                                        PluginVars.placedBlocksCache.get(event.player.id);
+                                data.blocksBroken +=
+                                        PluginVars.brokenBlocksCache.get(event.player.id);
+                                PluginVars.brokenBlocksCache.remove(event.player.id);
+                                PluginVars.placedBlocksCache.remove(event.player.id);
+                                Database.setPlayerData(data).block();
+                            });
+                }
+        );
+        Events.on(
+                EventType.GameOverEvent.class,
+                event -> {
+                    Bot.updateStatus();
 
-            Database.getPlayersData(Groups.player).publishOn(Schedulers.boundedElastic()).doOnNext(data -> {
-                data.gamesPlayed += 1;
-                Database.setPlayerData(data).subscribe();
-            }).subscribe();
-        });
+                    Database
+                            .getPlayersData(Groups.player)
+                            .publishOn(Schedulers.boundedElastic())
+                            .doOnNext(data -> {
+                                data.gamesPlayed += 1;
+                                Database.setPlayerData(data).subscribe();
+                            })
+                            .subscribe();
+                }
+        );
 
-        Events.on(EventType.TapEvent.class, event -> {
+        Events.on(
+                EventType.TapEvent.class,
+                event -> {
                     if (!History.enabledHistory.contains(event.player)) return;
 
                     Player player = event.player;
@@ -148,19 +164,21 @@ public class Listeners {
             switch (action.type) {
                 case breakBlock -> {
                     PluginVars.brokenBlocksCache.increment(action.player.id);
-                    historyEntry = BlockChangeType.Destroyed.formatEntry(
-                            playerInfo,
-                            action.block,
-                            position
-                    );
+                    historyEntry =
+                            BlockChangeType.Destroyed.formatEntry(
+                                    playerInfo,
+                                    action.block,
+                                    position
+                            );
                 }
                 case placeBlock -> {
                     PluginVars.placedBlocksCache.increment(action.player.id);
-                    historyEntry = BlockChangeType.Built.formatEntry(
-                            playerInfo,
-                            action.block,
-                            position
-                    );
+                    historyEntry =
+                            BlockChangeType.Built.formatEntry(
+                                    playerInfo,
+                                    action.block,
+                                    position
+                            );
                 }
                 default -> {
                 }

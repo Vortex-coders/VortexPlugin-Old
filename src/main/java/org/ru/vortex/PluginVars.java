@@ -11,6 +11,7 @@ import java.util.HashSet;
 import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_DASHES;
 
 public class PluginVars {
+
     public static final IntIntMap placedBlocksCache = new IntIntMap(), brokenBlocksCache = new IntIntMap();
     public static final String translationApiUrl = "";
     public static final String serverLink = "https://discord.gg/pTtQTUQM68";

@@ -19,51 +19,56 @@ public class ClientCommands {
     public static void init() {
         register("discord", (args, player) -> openURI(player.con, serverLink));
 
-        register("rtv", (args, player) -> {
-            if (player.admin()) {
-                rtvEnabled = args.length != 1 || !args[0].equals("off");
-            }
+        register(
+                "rtv",
+                (args, player) -> {
+                    if (player.admin()) {
+                        rtvEnabled = args.length != 1 || !args[0].equals("off");
+                    }
 
-            if (!rtvEnabled) {
-                Bundler.sendLocalized(player, "commands.rtv.disabled");
-                return;
-            }
+                    if (!rtvEnabled) {
+                        Bundler.sendLocalized(player, "commands.rtv.disabled");
+                        return;
+                    }
 
-            if (rtvVotes.contains(player.uuid())) {
-                Bundler.sendLocalized(player, "commands.rtv.alreadyvoted");
-                return;
-            }
+                    if (rtvVotes.contains(player.uuid())) {
+                        Bundler.sendLocalized(player, "commands.rtv.alreadyvoted");
+                        return;
+                    }
 
-            rtvVotes.add(player.uuid());
+                    rtvVotes.add(player.uuid());
 
-            int cur = rtvVotes.size();
-            int req = (int) Math.ceil(rtvRatio * Groups.player.size());
+                    int cur = rtvVotes.size();
+                    int req = (int) Math.ceil(rtvRatio * Groups.player.size());
 
-            Bundler.sendLocalizedAll(
-                    "commands.rtv.change-map",
-                    player.name,
-                    cur,
-                    req
-            );
+                    Bundler.sendLocalizedAll(
+                            "commands.rtv.change-map",
+                            player.name,
+                            cur,
+                            req
+                    );
 
-            if (cur < req) return;
-            rtvVotes.clear();
+                    if (cur < req) return;
+                    rtvVotes.clear();
 
-            Bundler.sendLocalizedAll("commands.rtv.vote-passed");
-            Events.fire(new EventType.GameOverEvent(Team.crux));
-        });
+                    Bundler.sendLocalizedAll("commands.rtv.vote-passed");
+                    Events.fire(new EventType.GameOverEvent(Team.crux));
+                }
+        );
 
-        register("history", (args, player) -> {
-            if (enabledHistory.contains(player)) {
-                enabledHistory.remove(player);
-                return;
-            }
+        register(
+                "history",
+                (args, player) -> {
+                    if (enabledHistory.contains(player)) {
+                        enabledHistory.remove(player);
+                        return;
+                    }
 
-            enabledHistory.add(player);
-        });
+                    enabledHistory.add(player);
+                }
+        );
 
         register("login", (args, player) -> {
-
         });
     }
 

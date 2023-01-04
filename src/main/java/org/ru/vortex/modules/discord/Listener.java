@@ -12,7 +12,8 @@ public class Listener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if (event.getChannel() == botChannel && event.getMember() != null)
-            app.post(() -> sendMessageToGame(event.getMember(), event.getMessage()));
+        if (
+                event.getChannel() == botChannel && event.getMember() != null
+        ) app.post(() -> sendMessageToGame(event.getMember(), event.getMessage()));
     }
 }

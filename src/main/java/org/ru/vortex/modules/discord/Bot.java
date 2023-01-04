@@ -28,6 +28,7 @@ import static net.dv8tion.jda.api.utils.MemberCachePolicy.VOICE;
 import static org.ru.vortex.PluginVars.config;
 
 public class Bot {
+
     public static Role adminRole;
     public static MessageChannel botChannel, adminChannel;
     private static JDA jda;
@@ -53,7 +54,8 @@ public class Bot {
 
             MessageRequest.setDefaultMentions(EnumSet.of(CHANNEL, EMOJI));
 
-            jda.getGuildCache()
+            jda
+                    .getGuildCache()
                     .stream()
                     .findFirst()
                     .ifPresent(guild ->
@@ -61,10 +63,14 @@ public class Bot {
                                     .getSelfMember()
                                     .modifyNickname(
                                             format("[@] @", config.prefix, jda.getSelfUser().getName())
-                                    ).queue()
+                                    )
+                                    .queue()
                     );
 
-            infoTag("Discord", format("Bot connected in as @", jda.getSelfUser().getAsTag()));
+            infoTag(
+                    "Discord",
+                    format("Bot connected in as @", jda.getSelfUser().getAsTag())
+            );
         } catch (InterruptedException e) {
             Log.errTag("Discord", format("Cannot connect to discord: @", e));
         }
@@ -79,8 +85,17 @@ public class Bot {
     }
 
     public static void updateStatus() {
-        if (connected())
-            jda.getPresence().setActivity(watching(format("at @ players on @", Groups.player.size(), stripColors(state.map.name()))));
+        if (connected()) jda
+                .getPresence()
+                .setActivity(
+                        watching(
+                                format(
+                                        "at @ players on @",
+                                        Groups.player.size(),
+                                        stripColors(state.map.name())
+                                )
+                        )
+                );
     }
 
     public static void sendMessageToGame(Member member, Message message) {
@@ -88,6 +103,12 @@ public class Bot {
         var rawContent = message.getContentRaw();
 
         infoTag("Discord", Strings.format("@: @", nickname, rawContent));
-        Call.sendMessage(Strings.format("[blue][Discord][][orange][[]@[orange]:[]@[]", nickname, rawContent));
+        Call.sendMessage(
+                Strings.format(
+                        "[blue][Discord][][orange][[]@[orange]:[]@[]",
+                        nickname,
+                        rawContent
+                )
+        );
     }
 }

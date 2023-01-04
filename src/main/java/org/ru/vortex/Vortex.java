@@ -18,17 +18,20 @@ import static org.ru.vortex.PluginVars.serverCommands;
 
 @SuppressWarnings("unused")
 public class Vortex extends Plugin {
+
     public Vortex() {
         Log.infoTag("Vortex", "Loading");
 
-        Core.app.addListener(new ApplicationListener() {
-            @Override
-            public void dispose() {
-                Bot.disconnect();
-                netServer.kickAll(serverRestarting);
-                Log.infoTag("Shutdown", "The server will now be shut down!");
-            }
-        });
+        Core.app.addListener(
+                new ApplicationListener() {
+                    @Override
+                    public void dispose() {
+                        Bot.disconnect();
+                        netServer.kickAll(serverRestarting);
+                        Log.infoTag("Shutdown", "The server will now be shut down!");
+                    }
+                }
+        );
     }
 
     @Override
