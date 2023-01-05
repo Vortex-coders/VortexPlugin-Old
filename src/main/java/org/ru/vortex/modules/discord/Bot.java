@@ -28,86 +28,64 @@ import net.dv8tion.jda.api.utils.messages.MessageRequest;
 
 public class Bot {
 
-  public static Role adminRole;
-  public static MessageChannel botChannel, adminChannel;
-  private static JDA jda;
+    public static Role adminRole;
+    public static MessageChannel botChannel, adminChannel;
+    private static JDA jda;
 
-  public static void init() {
-    try {
-      jda =
-        JDABuilder
-          .createLight(config.token)
-          .disableCache(CacheFlag.ACTIVITY)
-          .setMemberCachePolicy(VOICE.or(OWNER))
-          .setChunkingFilter(ChunkingFilter.NONE)
-          .disableIntents(GUILD_MESSAGE_TYPING, GUILD_PRESENCES)
-          .setLargeThreshold(50)
-          .enableIntents(MESSAGE_CONTENT, GUILD_MEMBERS)
-          .addEventListeners(new Listener())
-          .build()
-          .awaitReady();
+    public static void init() {
+        try {
+            jda =
+                JDABuilder
+                    .createLight(config.token)
+                    .disableCache(CacheFlag.ACTIVITY)
+                    .setMemberCachePolicy(VOICE.or(OWNER))
+                    .setChunkingFilter(ChunkingFilter.NONE)
+                    .disableIntents(GUILD_MESSAGE_TYPING, GUILD_PRESENCES)
+                    .setLargeThreshold(50)
+                    .enableIntents(MESSAGE_CONTENT, GUILD_MEMBERS)
+                    .addEventListeners(new Listener())
+                    .build()
+                    .awaitReady();
 
-      adminRole = jda.getRoleById(config.adminRoleId);
-      botChannel = jda.getTextChannelById(config.channelId);
-      adminChannel = jda.getTextChannelById(config.adminChannelId);
+            adminRole = jda.getRoleById(config.adminRoleId);
+            botChannel = jda.getTextChannelById(config.channelId);
+            adminChannel = jda.getTextChannelById(config.adminChannelId);
 
-      MessageRequest.setDefaultMentions(EnumSet.of(CHANNEL, EMOJI));
+            MessageRequest.setDefaultMentions(EnumSet.of(CHANNEL, EMOJI));
 
-      jda
-        .getGuildCache()
-        .stream()
-        .findFirst()
-        .ifPresent(guild ->
-          guild
-            .getSelfMember()
-            .modifyNickname(
-              format("[@] @", config.prefix, jda.getSelfUser().getName())
-            )
-            .queue()
-        );
+            jda
+                .getGuildCache()
+                .stream()
+                .findFirst()
+                .ifPresent(guild ->
+                    guild.getSelfMember().modifyNickname(format("[@] @", config.prefix, jda.getSelfUser().getName())).queue()
+                );
 
-      infoTag(
-        "Discord",
-        format("Bot connected in as @", jda.getSelfUser().getAsTag())
-      );
-    } catch (InterruptedException e) {
-      Log.errTag("Discord", format("Cannot connect to discord: @", e));
+            infoTag("Discord", format("Bot connected in as @", jda.getSelfUser().getAsTag()));
+        } catch (InterruptedException e) {
+            Log.errTag("Discord", format("Cannot connect to discord: @", e));
+        }
     }
-  }
 
-  public static boolean connected() {
-    return jda != null && jda.getStatus() == CONNECTED;
-  }
+    public static boolean connected() {
+        return jda != null && jda.getStatus() == CONNECTED;
+    }
 
-  public static void disconnect() {
-    if (connected()) jda.shutdown();
-  }
+    public static void disconnect() {
+        if (connected()) jda.shutdown();
+    }
 
-  public static void updateStatus() {
-    if (connected()) jda
-      .getPresence()
-      .setActivity(
-        watching(
-          format(
-            "at @ players on @",
-            Groups.player.size(),
-            stripColors(state.map.name())
-          )
-        )
-      );
-  }
+    public static void updateStatus() {
+        if (connected()) jda
+            .getPresence()
+            .setActivity(watching(format("at @ players on @", Groups.player.size(), stripColors(state.map.name()))));
+    }
 
-  public static void sendMessageToGame(Member member, Message message) {
-    var nickname = member.getUser().getAsTag();
-    var rawContent = message.getContentRaw();
+    public static void sendMessageToGame(Member member, Message message) {
+        var nickname = member.getUser().getAsTag();
+        var rawContent = message.getContentRaw();
 
-    infoTag("Discord", Strings.format("@: @", nickname, rawContent));
-    Call.sendMessage(
-      Strings.format(
-        "[blue][Discord][][orange][[]@[orange]:[]@[]",
-        nickname,
-        rawContent
-      )
-    );
-  }
+        infoTag("Discord", Strings.format("@: @", nickname, rawContent));
+        Call.sendMessage(Strings.format("[blue][Discord][][orange][[]@[orange]:[]@[]", nickname, rawContent));
+    }
 }
