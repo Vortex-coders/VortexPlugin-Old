@@ -10,7 +10,7 @@ public class PlayerData {
 
     public int gamesPlayed = 0;
 
-    public String translatorLanguage = "off";
+    public final String translatorLanguage = "off";
 
     @SuppressWarnings("unused")
     public PlayerData() {}

@@ -6,8 +6,8 @@ import java.util.function.Function;
 
 public class CirculatingArray<T> {
 
-    public T[] array;
-    public int staticSize;
+    public final T[] array;
+    public final int staticSize;
     public int deletePointer = 0;
     public Consumer<Integer> onRemove = index -> {};
 

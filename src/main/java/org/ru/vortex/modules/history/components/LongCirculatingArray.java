@@ -4,8 +4,8 @@ import java.util.Collection;
 
 public class LongCirculatingArray {
 
-    public long[] array;
-    public int staticSize;
+    public final long[] array;
+    public final int staticSize;
     public int deletePointer = 0;
 
     public LongCirculatingArray(long[] array) {

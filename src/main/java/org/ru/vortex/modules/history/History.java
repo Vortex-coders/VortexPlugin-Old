@@ -22,14 +22,14 @@ public class History {
         .pipe(seq -> seq.max(changeType -> changeType.id))
         .result()
         .id;
-    public static byte shortenedUUIDBites = 8;
+    public static final byte shortenedUUIDBites = 8;
     public static byte blocksIDBites;
     public static byte xBites;
     public static byte yBites;
-    public static double shortenedUUIDMaxValue = Math.pow(2, shortenedUUIDBites) - 1;
-    public static CirculatingArray<byte[]> shortenedUUIDs = new CirculatingArray<>(new byte[(int) shortenedUUIDMaxValue][]);
+    public static final double shortenedUUIDMaxValue = Math.pow(2, shortenedUUIDBites) - 1;
+    public static final CirculatingArray<byte[]> shortenedUUIDs = new CirculatingArray<>(new byte[(int) shortenedUUIDMaxValue][]);
     public static LongCirculatingArray history;
-    public static Set<Player> enabledHistory = new HashSet<>();
+    public static final Set<Player> enabledHistory = new HashSet<>();
 
     public static void init() {
         shortenedUUIDs.onRemove(index -> {

@@ -29,8 +29,8 @@ public class PluginVars {
 
     public static final OrderedMap<Message, Administration.PlayerInfo> loginWaiting = new OrderedMap<>();
     public static final String outlinePassword = "hentai";
-    public static double rtvRatio = 0.6;
-    public static HashSet<String> rtvVotes = new HashSet<>();
+    public static final double rtvRatio = 0.6;
+    public static final HashSet<String> rtvVotes = new HashSet<>();
     public static boolean rtvEnabled = true;
     public static Config config;
     public static CommandHandler clientCommands, serverCommands, outlineCommands;
