@@ -7,7 +7,7 @@
 
 Чтобы помочь плагину, вам достаточно делать commit'ы с добавлением, правкой кода или перевода плагина.
 Все необходимые правила и советы
-расписаны [здесь](https://github.com/Darkdustry-Coders/DarkdustryPlugin/blob/master/CONTRIBUTING.md).
+расписаны [здесь](CONTRIBUTING.md).
 
 Если вы хотите вступить в команду, то свяжитесь с администраторами в [Discord](https://discord.gg/pTtQTUQM68).
 

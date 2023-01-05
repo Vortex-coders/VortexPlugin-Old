@@ -52,7 +52,7 @@ public class GameOAuth {
                     Bundler.sendLocalized(player, "commands.login.successful");
                 }
 
-                return new EmbedBuilder().setTitle("Request Confirmed");
+                return new EmbedBuilder().setTitle("Request confirmed");
             }
         );
     }
@@ -62,7 +62,7 @@ public class GameOAuth {
             event,
             (info, player) -> {
                 if (player != null) Bundler.getLocalized(player, "commands.login.rejected");
-                return new EmbedBuilder().setTitle("Request Denied");
+                return new EmbedBuilder().setTitle("Request denied");
             }
         );
     }
@@ -71,7 +71,7 @@ public class GameOAuth {
         var playerInfo = loginWaiting.get(event.getMessage());
 
         var embed = new EmbedBuilder()
-            .setTitle(":mag: Player Info")
+            .setTitle("Player information")
             .addField("Nickname:", playerInfo.plainLastName(), true)
             .addField("UUID:", playerInfo.id, true)
             .addField("IP:", playerInfo.lastIP, true)
