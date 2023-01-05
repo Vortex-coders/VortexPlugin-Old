@@ -1,12 +1,10 @@
+### Project ###
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 server/
-
-### Prettier ###
-node_modules/
 
 ### IntelliJ IDEA ###
 .idea
