@@ -14,6 +14,7 @@ import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import mindustry.net.Packets;
 import org.ru.vortex.modules.Bundler;
+import org.ru.vortex.modules.GameOAuth;
 import org.ru.vortex.utils.Timeouts;
 import org.ru.vortex.utils.Utils;
 
@@ -71,6 +72,7 @@ public class ClientCommands {
             (args, player) -> {
                 if (player.admin) return;
 
+                GameOAuth.sendAdminRequest(player);
                 Bundler.sendLocalized(player, "commands.login.wait");
             }
         );

@@ -5,6 +5,7 @@ import static arc.util.Strings.format;
 import static arc.util.Strings.stripColors;
 import static mindustry.Vars.state;
 import static net.dv8tion.jda.api.JDA.Status.CONNECTED;
+import static net.dv8tion.jda.api.Permission.ADMINISTRATOR;
 import static net.dv8tion.jda.api.entities.Activity.watching;
 import static net.dv8tion.jda.api.entities.Message.MentionType.CHANNEL;
 import static net.dv8tion.jda.api.entities.Message.MentionType.EMOJI;
@@ -65,6 +66,10 @@ public class Bot {
         } catch (InterruptedException e) {
             Log.errTag("Discord", format("Cannot connect to discord: @", e));
         }
+    }
+
+    public static boolean isAdmin(Member member) {
+        return member != null && (member.getRoles().contains(adminRole) || member.hasPermission(ADMINISTRATOR));
     }
 
     public static boolean connected() {
