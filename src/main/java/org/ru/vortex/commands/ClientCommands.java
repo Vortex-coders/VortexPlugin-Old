@@ -1,22 +1,19 @@
 package org.ru.vortex.commands;
 
-import static arc.util.Strings.parseInt;
+import static arc.util.Strings.format;
 import static mindustry.gen.Call.openURI;
 import static org.ru.vortex.PluginVars.*;
+import static org.ru.vortex.modules.Bundler.*;
+import static org.ru.vortex.modules.GameOAuth.sendAdminRequest;
 import static org.ru.vortex.modules.history.History.enabledHistory;
 
 import arc.Events;
 import arc.util.CommandHandler.CommandRunner;
-import arc.util.Strings;
 import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
-import mindustry.net.Packets;
-import org.ru.vortex.modules.Bundler;
-import org.ru.vortex.modules.GameOAuth;
 import org.ru.vortex.utils.Timeouts;
-import org.ru.vortex.utils.Utils;
 
 public class ClientCommands {
 
@@ -31,12 +28,12 @@ public class ClientCommands {
                 }
 
                 if (!rtvEnabled) {
-                    Bundler.sendLocalized(player, "commands.rtv.disabled");
+                    sendLocalized(player, "commands.rtv.disabled");
                     return;
                 }
 
                 if (rtvVotes.contains(player.uuid())) {
-                    Bundler.sendLocalized(player, "commands.rtv.already-voted");
+                    sendLocalized(player, "commands.rtv.already-voted");
                     return;
                 }
 
@@ -45,12 +42,12 @@ public class ClientCommands {
                 int cur = rtvVotes.size();
                 int req = (int) Math.ceil(rtvRatio * Groups.player.size());
 
-                Bundler.sendLocalizedAll("commands.rtv.change-map", player.name, cur, req);
+                sendLocalizedAll("commands.rtv.change-map", player.name, cur, req);
 
                 if (cur < req) return;
                 rtvVotes.clear();
 
-                Bundler.sendLocalizedAll("commands.rtv.vote-passed");
+                sendLocalizedAll("commands.rtv.vote-passed");
                 Events.fire(new EventType.GameOverEvent(Team.crux));
             }
         );
@@ -72,26 +69,8 @@ public class ClientCommands {
             (args, player) -> {
                 if (player.admin) return;
 
-                GameOAuth.sendAdminRequest(player);
-                Bundler.sendLocalized(player, "commands.login.wait");
-            }
-        );
-
-        register(
-            "ban",
-            (args, player) -> {
-                var other = Groups.player.find(p -> p.id == parseInt(args[0]));
-
-                if (other == null) {
-                    Bundler.sendLocalized(player, "player-not-found");
-                    return;
-                }
-
-                other.kick(Packets.KickReason.banned);
-
-                Utils.temporaryBan(other, args[2], parseInt(args[1]));
-
-                Bundler.sendLocalized(player, "commands.ban.player-banned", other.name);
+                sendAdminRequest(player);
+                sendLocalized(player, "commands.login.wait");
             }
         );
     }
@@ -99,8 +78,8 @@ public class ClientCommands {
     private static void register(String name, CommandRunner<Player> runner) {
         clientCommands.<Player>register(
             name,
-            Bundler.getLocalized(Strings.format("commands.@.parameters", name)),
-            Bundler.getLocalized(Strings.format("commands.@.description", name)),
+            getLocalized(format("commands.@.parameters", name)),
+            getLocalized(format("commands.@.description", name)),
             (args, player) -> {
                 if (Timeouts.hasTimeout(player, name)) return;
                 runner.accept(args, player);

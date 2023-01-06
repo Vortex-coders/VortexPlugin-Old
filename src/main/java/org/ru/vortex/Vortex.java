@@ -40,10 +40,10 @@ public class Vortex extends Plugin {
         Time.mark();
 
         Config.init();
-        History.init();
-        Listeners.init();
         Database.connect();
         Bot.init();
+        Listeners.init();
+        History.init();
 
         Version.build = -1;
 
