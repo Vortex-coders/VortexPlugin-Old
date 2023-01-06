@@ -19,6 +19,7 @@ dependencies {
 
     implementation("net.dv8tion:JDA:5.0.0-beta.2")
     implementation("com.google.code.gson:gson:2.10")
+    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.19.0")
     implementation("com.github.xzxADIxzx.useful-stuffs:server-menus:3261ff23ac")
 
     implementation("org.mongodb:mongodb-driver-reactivestreams:4.8.1")

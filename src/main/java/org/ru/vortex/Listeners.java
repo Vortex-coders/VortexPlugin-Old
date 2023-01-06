@@ -1,15 +1,22 @@
 package org.ru.vortex;
 
+import static arc.Core.app;
+import static arc.util.Log.info;
+import static mindustry.Vars.netServer;
+import static mindustry.game.EventType.*;
+import static org.ru.vortex.PluginVars.brokenBlocksCache;
+import static org.ru.vortex.PluginVars.placedBlocksCache;
+import static org.ru.vortex.modules.Bundler.sendLocalized;
+import static org.ru.vortex.modules.Bundler.sendLocalizedAll;
+import static org.ru.vortex.modules.database.Database.*;
+import static org.ru.vortex.modules.discord.Bot.*;
+
 import arc.Events;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import java.util.ArrayList;
-import mindustry.Vars;
-import mindustry.game.EventType;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
-import org.ru.vortex.modules.Bundler;
-import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.modules.discord.Bot;
 import org.ru.vortex.modules.history.History;
 import org.ru.vortex.modules.history.components.BlockChangeType;
@@ -20,60 +27,73 @@ import reactor.core.scheduler.Schedulers;
 public class Listeners {
 
     public static void init() {
-        Events.on(EventType.WorldLoadEvent.class, event -> History.initHistory());
-        Events.on(
-            EventType.PlayerLeave.class,
-            event -> {
-                Bot.updateStatus();
+        Events.on(WorldLoadEvent.class, event -> History.initHistory());
+        Events.on(ServerLoadEvent.class, event -> sendEmbed(botChannel, "Server launched"));
 
-                Database
-                    .getPlayerData(event.player)
-                    .subscribe(data -> {
-                        data.blocksBuilt += PluginVars.placedBlocksCache.get(event.player.id);
-                        data.blocksBroken += PluginVars.brokenBlocksCache.get(event.player.id);
-                        PluginVars.brokenBlocksCache.remove(event.player.id);
-                        PluginVars.placedBlocksCache.remove(event.player.id);
-                        Database.setPlayerData(data).block();
-                    });
+        Events.on(
+            PlayerJoin.class,
+            event -> {
+                sendLocalizedAll("events.player-joined", event.player.plainName());
+                sendLocalized(event.player, "events.welcome", event.player.coloredName(), PluginVars.serverLink);
+                sendEmbed(botChannel, "@ joined", event.player.plainName());
+                app.post(Bot::updateStatus);
             }
         );
 
         Events.on(
-            EventType.GameOverEvent.class,
+            PlayerLeave.class,
             event -> {
-                Bot.updateStatus();
+                getPlayerData(event.player)
+                    .subscribe(data -> {
+                        data.blocksBuilt += placedBlocksCache.get(event.player.id);
+                        data.blocksBroken += brokenBlocksCache.get(event.player.id);
+                        brokenBlocksCache.remove(event.player.id);
+                        placedBlocksCache.remove(event.player.id);
+                        setPlayerData(data).block();
+                    });
 
-                Database
-                    .getPlayersData(Groups.player)
+                sendEmbed(botChannel, "@ left", event.player.plainName());
+                sendLocalizedAll("events.player-left", event.player.plainName());
+
+                app.post(Bot::updateStatus);
+            }
+        );
+
+        Events.on(
+            GameOverEvent.class,
+            event -> {
+                getPlayersData(Groups.player)
                     .publishOn(Schedulers.boundedElastic())
                     .doOnNext(data -> {
                         data.gamesPlayed += 1;
-                        Database.setPlayerData(data).subscribe();
+                        setPlayerData(data).subscribe();
                     })
                     .subscribe();
+
+                sendEmbed(botChannel, "Game over. @ team won!", event.winner.name);
+                app.post(Bot::updateStatus);
             }
         );
 
         Events.on(
-            EventType.ConnectPacketEvent.class,
+            ConnectPacketEvent.class,
             event -> {
                 var con = event.connection;
 
-                Database
-                    .getBan(con.uuid, con.address)
+                getBan(con.uuid, con.address)
                     .subscribe(data -> {
                         if (data.uuid == null) return;
                         if (data.unbanDate - Time.millis() <= 0) {
-                            Vars.netServer.admins.unbanPlayerID(con.uuid);
-                            Vars.netServer.admins.unbanPlayerIP(con.address);
-                            Database.unBan(data).subscribe();
+                            netServer.admins.unbanPlayerID(con.uuid);
+                            netServer.admins.unbanPlayerIP(con.address);
+                            unBan(data).subscribe();
                         }
                     });
             }
         );
 
         Events.on(
-            EventType.TapEvent.class,
+            TapEvent.class,
             event -> {
                 if (!History.enabledHistory.contains(event.player)) return;
 
@@ -97,27 +117,22 @@ public class Listeners {
 
                 tileHistory.forEach(tileEntry -> {
                     switch (tileEntry.changeType()) {
-                        case Built -> Bundler.sendLocalized(player, "history.block.built", tileEntry.block().localizedName, player.name);
-                        case Destroyed -> Bundler.sendLocalized(
-                            player,
-                            "history.block.destroyed",
-                            tileEntry.block().localizedName,
-                            player.name
-                        );
-                        case PayloadDrop -> Bundler.sendLocalized(
+                        case Built -> sendLocalized(player, "history.block.built", tileEntry.block().localizedName, player.name);
+                        case Destroyed -> sendLocalized(player, "history.block.destroyed", tileEntry.block().localizedName, player.name);
+                        case PayloadDrop -> sendLocalized(
                             player,
                             "history.block.payload-drop",
                             tileEntry.block().localizedName,
                             player.name
                         );
-                        case Pickup -> Bundler.sendLocalized(player, "history.block.pickup", tileEntry.block().localizedName, player.name);
+                        case Pickup -> sendLocalized(player, "history.block.pickup", tileEntry.block().localizedName, player.name);
                     }
                 });
             }
         );
 
         Events.on(
-            EventType.PickupEvent.class,
+            PickupEvent.class,
             event -> {
                 if (event.build == null || event.carrier.getPlayer() == null || event.carrier.getPlayer().getInfo() == null) return;
 
@@ -135,7 +150,7 @@ public class Listeners {
         );
 
         Events.on(
-            EventType.PayloadDropEvent.class,
+            PayloadDropEvent.class,
             event -> {
                 if (event.build == null || event.carrier.getPlayer() == null || event.carrier.getPlayer().getInfo() == null) return;
 
@@ -152,18 +167,25 @@ public class Listeners {
             }
         );
 
-        Vars.netServer.admins.addActionFilter(action -> {
+        netServer.admins.addChatFilter((author, text) -> {
+            info("&fi@: @", "&lc" + author.plainName(), "&lw" + text);
+            author.sendMessage(netServer.chatFormatter.format(author, text), author, text);
+            sendMessage(botChannel, "[@]: @", author.plainName(), text);
+            return null;
+        });
+
+        netServer.admins.addActionFilter(action -> {
             FormattedEntry historyEntry = null;
             var playerInfo = action.player.getInfo();
             var position = new Vec2(action.tile.x, action.tile.y);
 
             switch (action.type) {
                 case breakBlock -> {
-                    PluginVars.brokenBlocksCache.increment(action.player.id);
+                    brokenBlocksCache.increment(action.player.id);
                     historyEntry = BlockChangeType.Destroyed.formatEntry(playerInfo, action.block, position);
                 }
                 case placeBlock -> {
-                    PluginVars.placedBlocksCache.increment(action.player.id);
+                    placedBlocksCache.increment(action.player.id);
                     historyEntry = BlockChangeType.Built.formatEntry(playerInfo, action.block, position);
                 }
                 default -> {}

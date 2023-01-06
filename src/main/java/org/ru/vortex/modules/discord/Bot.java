@@ -19,8 +19,7 @@ import arc.util.Strings;
 import java.util.EnumSet;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
@@ -80,6 +79,24 @@ public class Bot {
         if (isConnected()) jda.shutdownNow();
     }
 
+    public static void sendMessage(MessageChannel channel, String content) {
+        if (channel != null && channel.canTalk()) channel.sendMessage(content).queue();
+    }
+
+    public static void sendMessage(MessageChannel channel, String content, Object... values) {
+        if (channel != null && channel.canTalk()) channel.sendMessage(Strings.format(content, values)).queue();
+    }
+
+    public static void sendEmbed(MessageChannel channel, String title) {
+        if (channel != null && channel.canTalk()) channel.sendMessageEmbeds(new EmbedBuilder().setTitle(title).build()).queue();
+    }
+
+    public static void sendEmbed(MessageChannel channel, String title, Object... values) {
+        if (channel != null && channel.canTalk()) channel
+            .sendMessageEmbeds(new EmbedBuilder().setTitle(Strings.format(title, values)).build())
+            .queue();
+    }
+
     public static void updateStatus() {
         if (isConnected()) jda
             .getPresence()
@@ -91,6 +108,6 @@ public class Bot {
         var rawContent = message.getContentRaw();
 
         infoTag("Discord", Strings.format("@: @", nickname, rawContent));
-        Call.sendMessage(Strings.format("[blue][Discord][][orange][[]@[orange]:[]@[]", nickname, rawContent));
+        Call.sendMessage(Strings.format("[blue][Discord] [white]@: []@", nickname, rawContent));
     }
 }

@@ -1,15 +1,16 @@
 package org.ru.vortex;
 
+import static arc.Core.app;
 import static mindustry.Vars.netServer;
 import static mindustry.net.Packets.KickReason.serverRestarting;
 import static org.ru.vortex.PluginVars.clientCommands;
 import static org.ru.vortex.PluginVars.serverCommands;
 
 import arc.ApplicationListener;
-import arc.Core;
 import arc.util.*;
 import mindustry.core.Version;
 import mindustry.mod.Plugin;
+import org.ru.vortex.commands.AdminCommands;
 import org.ru.vortex.commands.ClientCommands;
 import org.ru.vortex.modules.Config;
 import org.ru.vortex.modules.database.Database;
@@ -22,13 +23,15 @@ public class Vortex extends Plugin {
     public Vortex() {
         Log.infoTag("Vortex", "Loading");
 
-        Core.app.addListener(
+        app.addListener(
             new ApplicationListener() {
                 @Override
                 public void dispose() {
-                    Bot.disconnect();
-                    netServer.kickAll(serverRestarting);
                     Log.infoTag("Shutdown", "The server will now be shut down!");
+
+                    netServer.kickAll(serverRestarting);
+                    app.post(Bot::disconnect);
+                    app.exit();
                 }
             }
         );
@@ -53,7 +56,9 @@ public class Vortex extends Plugin {
     @Override
     public void registerClientCommands(CommandHandler handler) {
         clientCommands = handler;
+
         ClientCommands.init();
+        AdminCommands.init();
     }
 
     @Override
