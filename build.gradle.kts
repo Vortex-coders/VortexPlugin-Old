@@ -19,6 +19,7 @@ dependencies {
 
     implementation("net.dv8tion:JDA:5.0.0-beta.2")
     implementation("com.google.code.gson:gson:2.10")
+    implementation("com.github.xzxADIxzx.useful-stuffs:server-bundle:3261ff23ac")
 
     implementation("org.mongodb:mongodb-driver-reactivestreams:4.8.1")
     implementation(platform("io.projectreactor:reactor-bom:2020.0.24"))
