@@ -68,10 +68,18 @@ public class Database {
     }
 
     public static Mono<DeleteResult> unBan(BanData data) {
-        return Mono.from(bansCollection.deleteOne(getBanFilter(data.uuid, data.ip)));
+        return unBan(data.uuid, data.ip);
+    }
+
+    public static Mono<DeleteResult> unBan(String uuid, String ip) {
+        return Mono.from(bansCollection.deleteMany(getBanFilter(uuid, ip)));
     }
 
     private static Bson getBanFilter(String uuid, String ip) {
         return or(and(eq("uuid", uuid), eq("server", config.gamemode.name())), and(eq("ip", ip), eq("server", config.gamemode.name())));
+    }
+
+    public static Mono<BanData> getBanned() {
+        return Mono.from(bansCollection.find(eq("server", config.gamemode.name())));
     }
 }

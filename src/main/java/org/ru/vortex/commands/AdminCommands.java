@@ -8,9 +8,11 @@ import static org.ru.vortex.modules.Bundler.sendLocalized;
 import static org.ru.vortex.utils.Utils.temporaryBan;
 
 import arc.util.CommandHandler;
+import arc.util.Log;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import mindustry.net.Packets;
+import org.ru.vortex.modules.Bundler;
 
 public class AdminCommands {
 
@@ -25,9 +27,25 @@ public class AdminCommands {
                     return;
                 }
 
+                long days;
+                try {
+                    days = Long.parseLong(args[1]);
+                } catch (NumberFormatException ignored) {
+                    Bundler.sendLocalized(player, "commands.ban.days-number");
+                    return;
+                }
+
+                if (days <= 0) {
+                    Bundler.sendLocalized(player, "commands.ban.days-positive");
+                    return;
+                }
+
                 other.kick(Packets.KickReason.banned);
-                temporaryBan(other, args[2], parseInt(args[1]));
-                sendLocalized(player, "commands.ban.player-banned", other.name);
+
+                Groups.player.each(p -> p.ip().equals(other.ip()), p -> p.kick(Packets.KickReason.banned));
+
+                temporaryBan(other, args[2], days);
+                sendLocalized(player, "commands.ban.player-banned");
             }
         );
     }

@@ -10,8 +10,7 @@ import arc.ApplicationListener;
 import arc.util.*;
 import mindustry.core.Version;
 import mindustry.mod.Plugin;
-import org.ru.vortex.commands.AdminCommands;
-import org.ru.vortex.commands.ClientCommands;
+import org.ru.vortex.commands.*;
 import org.ru.vortex.modules.Config;
 import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.modules.discord.Bot;
@@ -64,5 +63,7 @@ public class Vortex extends Plugin {
     @Override
     public void registerServerCommands(CommandHandler handler) {
         serverCommands = handler;
+
+        ServerCommands.init();
     }
 }

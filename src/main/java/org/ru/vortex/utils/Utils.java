@@ -8,6 +8,8 @@ import mindustry.gen.Player;
 import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.modules.database.models.BanData;
 
+import java.util.concurrent.TimeUnit;
+
 public class Utils {
 
     public static void temporaryBan(Player player, String reason, long days) {
@@ -25,7 +27,7 @@ public class Utils {
                     data.uuid = uuid;
                     data.ip = ip;
                     data.reason = reason;
-                    data.unbanDate = Time.millis() + days * 24 * 60 * 60 * 1000;
+                    data.unbanDate = Time.millis() + TimeUnit.DAYS.toMillis(days);
                 })
             )
             .subscribe();
