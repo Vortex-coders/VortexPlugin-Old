@@ -72,16 +72,16 @@ public class Bot {
         return member != null && (member.getRoles().contains(adminRole) || member.hasPermission(ADMINISTRATOR));
     }
 
-    public static boolean connected() {
+    public static boolean isConnected() {
         return jda != null && jda.getStatus() == CONNECTED;
     }
 
     public static void disconnect() {
-        if (connected()) jda.shutdown();
+        if (isConnected()) jda.shutdownNow();
     }
 
     public static void updateStatus() {
-        if (connected()) jda
+        if (isConnected()) jda
             .getPresence()
             .setActivity(watching(format("at @ players on @", Groups.player.size(), stripColors(state.map.name()))));
     }

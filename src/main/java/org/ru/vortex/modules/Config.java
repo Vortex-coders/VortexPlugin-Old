@@ -13,13 +13,13 @@ import arc.util.Strings;
 
 public class Config {
 
-    public final String token = "";
-    public final String prefix = "";
-    public final String mongoUrl = "";
-    public final String channelId = "";
-    public final String adminRoleId = "";
-    public final String adminChannelId = "";
-    public final Gamemode gamemode = survival;
+    public String token = "";
+    public String prefix = "";
+    public String mongoUrl = "";
+    public String channelId = "";
+    public String adminRoleId = "";
+    public String adminChannelId = "";
+    public Gamemode gamemode = survival;
 
     public static void init() {
         Fi file = dataDirectory.child("config.json");
