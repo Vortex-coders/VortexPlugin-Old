@@ -1,5 +1,8 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
 plugins {
     id("java")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "org.ru.vortex"
@@ -36,4 +39,22 @@ tasks.withType<JavaCompile> {
 tasks.jar {
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+val relocate = tasks.register<ConfigureShadowRelocation>("relocateShadowJar") {
+    target = tasks.shadowJar.get()
+    prefix = project.property("props.root-package").toString() + ".shadow"
+}
+
+tasks.shadowJar {
+    // Makes sure the name of the final jar is (plugin-display-name).jar
+    archiveFileName.set("VortexPlugin.jar")
+    // Set the classifier to plugin for publication on a maven repository
+    archiveClassifier.set("plugin")
+    // Configure the dependencies shading
+    dependsOn(relocate)
+    // Reduce shadow jar size by removing unused classes.
+    // Warning, if one of your dependencies use service loaders or reflection, add to the exclude list
+    // such as "minimize { exclude(dependency("some.group:some-dependency:.*")) }"
+    minimize()
 }
