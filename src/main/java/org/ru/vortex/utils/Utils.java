@@ -1,13 +1,16 @@
 package org.ru.vortex.utils;
 
 import static org.ru.vortex.PluginVars.config;
+import static org.ru.vortex.modules.Bundler.getLocalized;
 
+import arc.util.Strings;
 import arc.util.Time;
-import mindustry.Vars;
 import mindustry.gen.Player;
+import mindustry.net.NetConnection;
 import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.modules.database.models.BanData;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class Utils {
@@ -17,9 +20,6 @@ public class Utils {
     }
 
     public static void temporaryBan(String uuid, String ip, String reason, long days) {
-        Vars.netServer.admins.banPlayer(uuid);
-        Vars.netServer.admins.banPlayerIP(ip);
-
         Database
             .setBan(
                 new BanData(data -> {
@@ -31,5 +31,12 @@ public class Utils {
                 })
             )
             .subscribe();
+    }
+
+    public static void kickLocalized(Player player, String key, Object... objects) {
+        kickLocalized(player.con, player.locale, key, objects);
+    }
+    public static void kickLocalized(NetConnection con, String locale, String key, Object... objects) {
+        con.kick(Strings.format(getLocalized(new Locale(locale), key), objects));
     }
 }
