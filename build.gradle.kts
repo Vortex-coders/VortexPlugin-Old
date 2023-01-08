@@ -33,7 +33,7 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.jar {
-    archiveBaseName.set("VortexPlugin.jar")
+    archiveBaseName.set("VortexPlugin")
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
