@@ -1,9 +1,7 @@
 package org.ru.vortex.commands;
 
 import arc.util.Log;
-import arc.util.Time;
 import mindustry.gen.Groups;
-import mindustry.net.Administration;
 import mindustry.net.Packets;
 import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.utils.Utils;
@@ -46,7 +44,7 @@ public class ServerCommands {
                             p -> p.kick(Packets.KickReason.banned)
                     );
 
-                    Utils.temporaryBan(target.id, target.lastIP, args[2], days);
+                    Utils.temporaryBan(target.id, target.lastIP, target.lastName, "console", args[2], days);
                 }
         );
 

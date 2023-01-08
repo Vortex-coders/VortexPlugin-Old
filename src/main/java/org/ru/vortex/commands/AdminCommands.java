@@ -8,7 +8,6 @@ import static org.ru.vortex.modules.Bundler.sendLocalized;
 import static org.ru.vortex.utils.Utils.temporaryBan;
 
 import arc.util.CommandHandler;
-import arc.util.Log;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import mindustry.net.Packets;
@@ -44,7 +43,7 @@ public class AdminCommands {
 
                 Groups.player.each(p -> p.ip().equals(other.ip()), p -> p.kick(Packets.KickReason.banned));
 
-                temporaryBan(other, args[2], days);
+                temporaryBan(other, player.name, args[2], days);
                 sendLocalized(player, "commands.ban.player-banned");
             }
         );

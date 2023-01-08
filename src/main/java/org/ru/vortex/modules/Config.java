@@ -19,6 +19,7 @@ public class Config {
     public String channelId = "";
     public String adminRoleId = "";
     public String adminChannelId = "";
+    public String bansChannelId = "";
     public Gamemode gamemode = survival;
 
     public static void init() {

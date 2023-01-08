@@ -14,22 +14,25 @@ import static net.dv8tion.jda.api.utils.MemberCachePolicy.OWNER;
 import static net.dv8tion.jda.api.utils.MemberCachePolicy.VOICE;
 import static org.ru.vortex.PluginVars.config;
 
-import arc.util.Log;
-import arc.util.Strings;
+import arc.util.*;
+
+import java.awt.*;
+import java.time.Duration;
 import java.util.EnumSet;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.*;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.dv8tion.jda.api.utils.messages.MessageRequest;
+import org.ru.vortex.modules.database.models.BanData;
 
 public class Bot {
 
     public static Role adminRole;
-    public static MessageChannel botChannel, adminChannel;
+    public static MessageChannel botChannel, adminChannel, bansChannel;
     private static JDA jda;
 
     public static void init() {
@@ -50,6 +53,7 @@ public class Bot {
             adminRole = jda.getRoleById(config.adminRoleId);
             botChannel = jda.getTextChannelById(config.channelId);
             adminChannel = jda.getTextChannelById(config.adminChannelId);
+            bansChannel = jda.getTextChannelById(config.bansChannelId);
 
             MessageRequest.setDefaultMentions(EnumSet.of(CHANNEL, EMOJI));
 
@@ -109,5 +113,18 @@ public class Bot {
 
         infoTag("Discord", Strings.format("@: @", nickname, rawContent));
         Call.sendMessage(Strings.format("[blue][Discord] [white]@: []@", nickname, rawContent));
+    }
+
+    public static void sendBanMessage(BanData ban) {
+        if (bansChannel == null || !bansChannel.canTalk()) return;
+
+        bansChannel.sendMessageEmbeds(new EmbedBuilder()
+                    .setTitle(ban.name + " banned")
+                    .addField("Administrator", ban.adminName, false)
+                    .addField("Reason", ban.reason, false)
+                    .addField("Unban date", TimeFormat.DATE_LONG.format(ban.unbanDate), false)
+                    .setColor(Color.red)
+                    .build())
+                .queue();
     }
 }
