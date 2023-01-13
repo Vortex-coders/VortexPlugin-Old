@@ -1,28 +1,25 @@
 package org.ru.vortex;
 
-import arc.Events;
-import org.ru.vortex.modules.history.History;
-
 import static arc.Core.app;
 import static arc.util.Log.info;
 import static mindustry.Vars.netServer;
 import static mindustry.game.EventType.*;
-import static org.ru.vortex.utils.Utils.kickLocalized;
 import static org.ru.vortex.PluginVars.brokenBlocksCache;
 import static org.ru.vortex.PluginVars.placedBlocksCache;
 import static org.ru.vortex.modules.Bundler.*;
 import static org.ru.vortex.modules.database.Database.*;
 import static org.ru.vortex.modules.discord.Bot.*;
+import static org.ru.vortex.utils.Utils.kickLocalized;
 
+import arc.Events;
 import arc.math.geom.Vec2;
 import arc.util.Time;
-
 import java.time.Duration;
 import java.util.ArrayList;
-
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import org.ru.vortex.modules.discord.Bot;
+import org.ru.vortex.modules.history.History;
 import org.ru.vortex.modules.history.components.BlockChangeType;
 import org.ru.vortex.modules.history.components.FormattedEntry;
 import org.ru.vortex.utils.Pipe;
@@ -92,11 +89,15 @@ public class Listeners {
                         } else {
                             Duration remain = Duration.ofMillis(data.unbanDate - Time.millis());
 
-                            kickLocalized(con, event.packet.locale, "kick.temporary-ban",
-                                    data.reason,
-                                    remain.toDays(),
-                                    remain.toHoursPart(),
-                                    remain.toMinutesPart());
+                            kickLocalized(
+                                con,
+                                event.packet.locale,
+                                "kick.temporary-ban",
+                                data.reason,
+                                remain.toDays(),
+                                remain.toHoursPart(),
+                                remain.toMinutesPart()
+                            );
                         }
                     });
             }

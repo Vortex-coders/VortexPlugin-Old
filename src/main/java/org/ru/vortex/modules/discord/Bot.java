@@ -15,7 +15,6 @@ import static net.dv8tion.jda.api.utils.MemberCachePolicy.VOICE;
 import static org.ru.vortex.PluginVars.config;
 
 import arc.util.*;
-
 import java.awt.*;
 import java.time.Duration;
 import java.util.EnumSet;
@@ -118,13 +117,16 @@ public class Bot {
     public static void sendBanMessage(BanData ban) {
         if (bansChannel == null || !bansChannel.canTalk()) return;
 
-        bansChannel.sendMessageEmbeds(new EmbedBuilder()
+        bansChannel
+            .sendMessageEmbeds(
+                new EmbedBuilder()
                     .setTitle(ban.name + " banned")
                     .addField("Administrator", ban.adminName, false)
                     .addField("Reason", ban.reason, false)
                     .addField("Unban date", TimeFormat.DATE_LONG.format(ban.unbanDate), false)
                     .setColor(Color.red)
-                    .build())
-                .queue();
+                    .build()
+            )
+            .queue();
     }
 }
