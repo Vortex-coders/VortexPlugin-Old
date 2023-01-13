@@ -1,5 +1,6 @@
 package org.ru.vortex.modules;
 
+import static arc.Core.app;
 import static mindustry.Vars.dataDirectory;
 import static mindustry.net.Administration.Config.*;
 import static org.ru.vortex.PluginVars.config;
@@ -16,6 +17,8 @@ public class Config {
     public String token = "";
     public String prefix = "";
     public String mongoUrl = "";
+    public String name = "";
+    public String description = "";
     public String channelId = "";
     public String adminRoleId = "";
     public String adminChannelId = "";
@@ -30,10 +33,14 @@ public class Config {
         } else {
             file.writeString(gson.toJson(config = new Config()));
             Log.infoTag("Config", Strings.format("Config generated in @", file.absolutePath()));
+            app.exit();
         }
 
         autoPause.set(config.gamemode.isDefault());
         enableVotekick.set(config.gamemode != hub);
+
+        serverName.set(config.name);
+        desc.set(config.description);
 
         motd.set("off");
         showConnectMessages.set(false);

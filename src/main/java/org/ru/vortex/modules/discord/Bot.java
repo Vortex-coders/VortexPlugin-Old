@@ -14,16 +14,17 @@ import static net.dv8tion.jda.api.utils.MemberCachePolicy.OWNER;
 import static net.dv8tion.jda.api.utils.MemberCachePolicy.VOICE;
 import static org.ru.vortex.PluginVars.config;
 
-import arc.util.*;
+import arc.util.Log;
+import arc.util.Strings;
 import java.awt.*;
-import java.time.Duration;
 import java.util.EnumSet;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import net.dv8tion.jda.api.utils.*;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.TimeFormat;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.dv8tion.jda.api.utils.messages.MessageRequest;
 import org.ru.vortex.modules.database.models.BanData;
@@ -50,7 +51,7 @@ public class Bot {
                     .awaitReady();
 
             adminRole = jda.getRoleById(config.adminRoleId);
-            botChannel = jda.getTextChannelById(config.channelId);
+            botChannel = jda.getThreadChannelById(config.channelId);
             adminChannel = jda.getTextChannelById(config.adminChannelId);
             bansChannel = jda.getTextChannelById(config.bansChannelId);
 
