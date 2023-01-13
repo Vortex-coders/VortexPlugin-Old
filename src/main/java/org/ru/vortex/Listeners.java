@@ -71,7 +71,7 @@ public class Listeners {
                     })
                     .subscribe();
 
-                sendEmbed(botChannel, "Game over. @ team won!", event.winner.name);
+                sendEmbed(botChannel, "Game over!", event.winner.name);
                 app.post(Bot::updateStatus);
             }
         );
