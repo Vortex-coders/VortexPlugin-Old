@@ -181,7 +181,7 @@ public class Listeners {
         netServer.admins.addChatFilter((author, text) -> {
             info("&fi@: @", "&lc" + author.plainName(), "&lw" + text);
             author.sendMessage(netServer.chatFormatter.format(author, text), author, text);
-            sendMessage(botChannel, "[@]: @", author.plainName(), text);
+            sendMessage(botChannel, "**`@:`** @", author.plainName(), text);
             return null;
         });
 

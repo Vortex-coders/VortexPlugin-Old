@@ -111,7 +111,7 @@ public class Bot {
         var rawContent = message.getContentRaw();
 
         infoTag("Discord", Strings.format("@: @", nickname, rawContent));
-        Call.sendMessage(Strings.format("[blue][Discord] [white]@: []@", nickname, rawContent));
+        Call.sendMessage(Strings.format("[blue][Discord] [white]@[blue]: [white]@", nickname, rawContent));
     }
 
     public static void sendBanMessage(BanData ban) {
