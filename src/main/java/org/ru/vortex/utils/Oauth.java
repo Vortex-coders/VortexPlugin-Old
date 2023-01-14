@@ -8,6 +8,8 @@ import org.ru.vortex.modules.database.Database;
 
 /**
  * Class contains static OauthMethods
+ *
+ * @author nekonya
  */
 public class Oauth {
 
