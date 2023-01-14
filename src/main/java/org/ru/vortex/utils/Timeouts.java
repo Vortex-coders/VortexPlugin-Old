@@ -6,7 +6,7 @@ import mindustry.gen.Player;
 
 public class Timeouts {
 
-    private static final Long defaultTime = 90000L;
+    private static final Long defaultTime = 30000L;
     private static final ObjectMap<String, ObjectMap<String, Long>> timeouts = new ObjectMap<>();
 
     public static boolean hasTimeout(Player player, String command) {

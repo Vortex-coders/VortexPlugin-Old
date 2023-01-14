@@ -17,8 +17,11 @@ public class PluginVars {
     public static final IntIntMap placedBlocksCache = new IntIntMap(), brokenBlocksCache = new IntIntMap();
     public static final String translationApiUrl = "";
     public static final String serverLink = "https://discord.gg/pTtQTUQM68";
-    public static final String discordAuthString =
+    public static final String discordAuthStringTest =
         "https://discord.com/api/oauth2/authorize?client_id=1058095954097610794&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fredirect&response_type=code&scope=identify&state=";
+
+    public static final String discordAuthString =
+        "https://discord.com/api/oauth2/authorize?client_id=1063665247577198702&redirect_uri=http%3A%2F%2Flocalhost%3A8080&response_type=code&scope=identify&state=";
 
     public static final Gson gson = new GsonBuilder()
         .setFieldNamingPolicy(LOWER_CASE_WITH_DASHES)
@@ -28,10 +31,9 @@ public class PluginVars {
         .create();
 
     public static final OrderedMap<Message, Administration.PlayerInfo> loginWaiting = new OrderedMap<>();
-    public static final String outlinePassword = "hentai";
     public static final double rtvRatio = 0.6;
     public static final HashSet<String> rtvVotes = new HashSet<>();
     public static boolean rtvEnabled = true;
     public static Config config;
-    public static CommandHandler clientCommands, serverCommands, outlineCommands;
+    public static CommandHandler clientCommands, serverCommands;
 }

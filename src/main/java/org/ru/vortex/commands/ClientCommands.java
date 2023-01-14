@@ -6,6 +6,8 @@ import static org.ru.vortex.PluginVars.*;
 import static org.ru.vortex.modules.Bundler.*;
 import static org.ru.vortex.modules.GameOAuth.sendAdminRequest;
 import static org.ru.vortex.modules.history.History.enabledHistory;
+import static org.ru.vortex.utils.Oauth.getAuthLink;
+import static org.ru.vortex.utils.Oauth.isAuthorized;
 
 import arc.Events;
 import arc.util.CommandHandler.CommandRunner;
@@ -71,6 +73,15 @@ public class ClientCommands {
 
                 sendAdminRequest(player);
                 sendLocalized(player, "commands.login.wait");
+            }
+        );
+
+        register(
+            "register",
+            (args, player) -> {
+                if (isAuthorized(player)) return;
+
+                openURI(player.con, getAuthLink(player));
             }
         );
     }
