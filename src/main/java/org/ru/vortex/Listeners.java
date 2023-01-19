@@ -141,6 +141,26 @@ public class Listeners {
                 });
             }
         );
+        
+        Events.on(BlockBuildEndEvent.class,
+                event -> {
+                    if (!event.unit.isPlayer()) return;
+                    FormattedEntry historyEntry;
+                    Player player = event.unit.getPlayer();
+                    var playerInfo = player.getInfo();
+                    var position = new Vec2(event.tile.x, event.tile.y);
+
+                    if (event.breaking) {
+                        brokenBlocksCache.increment(player.id);
+                        historyEntry = BlockChangeType.Destroyed.formatEntry(playerInfo, event.tile.block(), position);
+                    } else {
+                        placedBlocksCache.increment(player.id);
+                        historyEntry = BlockChangeType.Built.formatEntry(playerInfo, event.tile.block(), position);
+                    }
+
+                    Pipe.apply(historyEntry).pipe(History::compressHistory).pipe(History.history::add);
+                }
+        );        
 
         Events.on(
             PickupEvent.class,
@@ -183,27 +203,6 @@ public class Listeners {
             author.sendMessage(netServer.chatFormatter.format(author, text), author, text);
             sendMessage(botChannel, "**`@:`** @", author.plainName(), text);
             return null;
-        });
-
-        netServer.admins.addActionFilter(action -> {
-            FormattedEntry historyEntry = null;
-            var playerInfo = action.player.getInfo();
-            var position = new Vec2(action.tile.x, action.tile.y);
-
-            switch (action.type) {
-                case breakBlock -> {
-                    brokenBlocksCache.increment(action.player.id);
-                    historyEntry = BlockChangeType.Destroyed.formatEntry(playerInfo, action.block, position);
-                }
-                case placeBlock -> {
-                    placedBlocksCache.increment(action.player.id);
-                    historyEntry = BlockChangeType.Built.formatEntry(playerInfo, action.block, position);
-                }
-                default -> {}
-            }
-
-            if (historyEntry != null) Pipe.apply(historyEntry).pipe(History::compressHistory).pipe(History.history::add);
-            return true;
         });
     }
 }
