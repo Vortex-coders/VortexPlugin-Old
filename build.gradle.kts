@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
     id("java")
@@ -16,18 +17,24 @@ repositories {
 dependencies {
     val mindustryVersion = "v141.2"
 
+    compileOnly("org.projectlombok:lombok:1.18.24")
     compileOnly("com.github.Anuken.Arc:arc-core:$mindustryVersion")
     compileOnly("com.github.Anuken.Mindustry:core:$mindustryVersion")
-    compileOnly("org.projectlombok:lombok:1.18.24")
+    compileOnly("com.github.Anuken.Mindustry:server:$mindustryVersion")
+
+    implementation("org.jline:jline-reader:3.22.0")
+    implementation("org.jline:jline-console:3.22.0")
+    if (Os.isFamily(Os.FAMILY_WINDOWS))
+        implementation("org.jline:jline-terminal-jna:3.22.0")
 
     implementation("net.dv8tion:JDA:5.0.0-beta.2")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.19.0")
     // implementation("com.github.xzxADIxzx.useful-stuffs:server-menus:3261ff23ac")
 
+    implementation(("io.projectreactor:reactor-core"))
     implementation("org.mongodb:mongodb-driver-reactivestreams:4.8.1")
     implementation(platform("io.projectreactor:reactor-bom:2020.0.24"))
-    implementation(("io.projectreactor:reactor-core"))
 
     annotationProcessor("org.projectlombok:lombok:1.18.24")
 }

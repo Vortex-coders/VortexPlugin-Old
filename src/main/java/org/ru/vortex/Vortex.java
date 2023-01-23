@@ -12,6 +12,7 @@ import mindustry.core.Version;
 import mindustry.mod.Plugin;
 import org.ru.vortex.commands.*;
 import org.ru.vortex.modules.Config;
+import org.ru.vortex.modules.console.Console;
 import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.modules.discord.Bot;
 import org.ru.vortex.modules.history.History;
@@ -41,6 +42,7 @@ public class Vortex extends Plugin {
         Log.infoTag("Vortex", "Starting");
         Time.mark();
 
+        Console.init();
         Config.init();
         Database.connect();
         Bot.init();
