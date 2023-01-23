@@ -5,6 +5,7 @@ import static arc.util.Strings.parseInt;
 import static org.ru.vortex.PluginVars.clientCommands;
 import static org.ru.vortex.modules.Bundler.getLocalized;
 import static org.ru.vortex.modules.Bundler.sendLocalized;
+import static org.ru.vortex.utils.Checks.adminCheck;
 import static org.ru.vortex.utils.Utils.temporaryBan;
 
 import arc.util.CommandHandler;
@@ -55,7 +56,7 @@ public class AdminCommands {
             getLocalized(format("commands.@.parameters", name)),
             getLocalized(format("commands.@.description", name)),
             (args, player) -> {
-                if (!player.admin) return;
+                if (adminCheck(player)) return;
                 runner.accept(args, player);
             }
         );

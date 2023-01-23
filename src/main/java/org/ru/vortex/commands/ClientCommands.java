@@ -6,8 +6,10 @@ import static org.ru.vortex.PluginVars.*;
 import static org.ru.vortex.modules.Bundler.*;
 import static org.ru.vortex.modules.GameOAuth.sendAdminRequest;
 import static org.ru.vortex.modules.history.History.enabledHistory;
+import static org.ru.vortex.utils.Checks.timeoutCheck;
 import static org.ru.vortex.utils.Oauth.getAuthLink;
 import static org.ru.vortex.utils.Oauth.isAuthorized;
+import static org.ru.vortex.utils.Timeouts.timeout;
 
 import arc.Events;
 import arc.util.CommandHandler.CommandRunner;
@@ -15,7 +17,6 @@ import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
-import org.ru.vortex.utils.Timeouts;
 
 public class ClientCommands {
 
@@ -69,7 +70,10 @@ public class ClientCommands {
         register(
             "login",
             (args, player) -> {
-                if (player.admin) return;
+                if (player.admin) {
+                    sendLocalized(player, "already-admin");
+                    return;
+                }
 
                 sendAdminRequest(player);
                 sendLocalized(player, "commands.login.wait");
@@ -92,9 +96,9 @@ public class ClientCommands {
             getLocalized(format("commands.@.parameters", name)),
             getLocalized(format("commands.@.description", name)),
             (args, player) -> {
-                if (Timeouts.hasTimeout(player, name)) return;
+                if (timeoutCheck(player, name)) return;
                 runner.accept(args, player);
-                Timeouts.timeout(player, name);
+                timeout(player, name);
             }
         );
     }
