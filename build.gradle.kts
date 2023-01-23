@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    val mindustryVersion = "v140.4"
+    val mindustryVersion = "v141.2"
 
     compileOnly("com.github.Anuken.Arc:arc-core:$mindustryVersion")
     compileOnly("com.github.Anuken.Mindustry:core:$mindustryVersion")
@@ -34,6 +34,9 @@ dependencies {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+
+    sourceCompatibility = "18"
+    targetCompatibility = "18"
 }
 
 tasks.jar {

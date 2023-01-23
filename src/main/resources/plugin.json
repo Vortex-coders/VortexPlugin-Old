@@ -1,8 +1,9 @@
 {
   "name": "vortex-plugin",
   "displayName": "Vortex Plugin",
-  "author": "lucin, OSPx, nekonya",
-  "description": "A main plugin for vortex servers",
+  "author": "lucin, OSPx, nekonya, SSTentaclesSS",
+  "description": "\nA main plugin for vortex servers.\n\nCheck out our repository:\n+ https://github.com/Vortex-coders/VortexPlugin\n\nThanks for contributing:\n+ lucin\n+ OSPx\n+ nekonya\n+ SSTentaclesSS",
+  "minGameVersion": "141",
   "version": "1.0.0",
   "main": "org.ru.vortex.Vortex"
 }

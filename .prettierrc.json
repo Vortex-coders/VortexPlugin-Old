@@ -1,9 +1,7 @@
 {
   "overrides": [
     {
-      "files": [
-        "*.java"
-      ],
+      "files": ["*.java"],
       "options": {
         "printWidth": 140,
         "tabWidth": 4,

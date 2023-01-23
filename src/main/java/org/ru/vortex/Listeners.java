@@ -141,26 +141,29 @@ public class Listeners {
                 });
             }
         );
-        
-        Events.on(BlockBuildEndEvent.class,
-                event -> {
-                    if (!event.unit.isPlayer()) return;
-                    FormattedEntry historyEntry;
-                    Player player = event.unit.getPlayer();
-                    var playerInfo = player.getInfo();
-                    var position = new Vec2(event.tile.x, event.tile.y);
 
-                    if (event.breaking) {
-                        brokenBlocksCache.increment(player.id);
-                        historyEntry = BlockChangeType.Destroyed.formatEntry(playerInfo, event.tile.block(), position);
-                    } else {
-                        placedBlocksCache.increment(player.id);
-                        historyEntry = BlockChangeType.Built.formatEntry(playerInfo, event.tile.block(), position);
-                    }
+        Events.on(
+            BlockBuildEndEvent.class,
+            event -> {
+                if (!event.unit.isPlayer()) return;
 
-                    Pipe.apply(historyEntry).pipe(History::compressHistory).pipe(History.history::add);
+                FormattedEntry historyEntry;
+                Player player = event.unit.getPlayer();
+
+                var playerInfo = player.getInfo();
+                var position = new Vec2(event.tile.x, event.tile.y);
+
+                if (event.breaking) {
+                    brokenBlocksCache.increment(player.id);
+                    historyEntry = BlockChangeType.Destroyed.formatEntry(playerInfo, event.tile.block(), position);
+                } else {
+                    placedBlocksCache.increment(player.id);
+                    historyEntry = BlockChangeType.Built.formatEntry(playerInfo, event.tile.block(), position);
                 }
-        );        
+
+                Pipe.apply(historyEntry).pipe(History::compressHistory).pipe(History.history::add);
+            }
+        );
 
         Events.on(
             PickupEvent.class,
