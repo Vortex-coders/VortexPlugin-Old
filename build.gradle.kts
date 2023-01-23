@@ -22,10 +22,10 @@ dependencies {
     compileOnly("com.github.Anuken.Mindustry:core:$mindustryVersion")
     compileOnly("com.github.Anuken.Mindustry:server:$mindustryVersion")
 
-    implementation("org.jline:jline-reader:3.22.0")
-    implementation("org.jline:jline-console:3.22.0")
+    implementation("org.jline:jline-reader:3.21.0")
+    implementation("org.jline:jline-console:3.21.0")
     if (Os.isFamily(Os.FAMILY_WINDOWS))
-        implementation("org.jline:jline-terminal-jna:3.22.0")
+        implementation("org.jline:jline-terminal-jna:3.21.0")
 
     implementation("net.dv8tion:JDA:5.0.0-beta.2")
     implementation("com.google.code.gson:gson:2.10.1")
