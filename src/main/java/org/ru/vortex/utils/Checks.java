@@ -1,7 +1,7 @@
 package org.ru.vortex.utils;
 
 import static org.ru.vortex.modules.Bundler.sendLocalized;
-import static org.ru.vortex.utils.Timeouts.*;
+import static org.ru.vortex.utils.Timeouts.hasTimeout;
 
 import mindustry.gen.Player;
 

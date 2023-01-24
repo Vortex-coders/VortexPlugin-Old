@@ -16,20 +16,20 @@ import org.ru.vortex.utils.Pipe;
 
 public class History {
 
+    public static final byte shortenedUUIDBites = 8;
+    public static final double shortenedUUIDMaxValue = Math.pow(2, shortenedUUIDBites) - 1;
+    public static final CirculatingArray<byte[]> shortenedUUIDs = new CirculatingArray<>(new byte[(int) shortenedUUIDMaxValue][]);
+    public static final Set<Player> enabledHistory = new HashSet<>();
     private static final byte changeTypeBites = Pipe
         .apply(BlockChangeType.values())
         .pipe(Seq::new)
         .pipe(seq -> seq.max(changeType -> changeType.id))
         .result()
         .id;
-    public static final byte shortenedUUIDBites = 8;
     public static byte blocksIDBites;
     public static byte xBites;
     public static byte yBites;
-    public static final double shortenedUUIDMaxValue = Math.pow(2, shortenedUUIDBites) - 1;
-    public static final CirculatingArray<byte[]> shortenedUUIDs = new CirculatingArray<>(new byte[(int) shortenedUUIDMaxValue][]);
     public static LongCirculatingArray history;
-    public static final Set<Player> enabledHistory = new HashSet<>();
 
     public static void init() {
         shortenedUUIDs.onRemove(index -> {

@@ -36,4 +36,5 @@ public class PluginVars {
     public static boolean rtvEnabled = true;
     public static Config config;
     public static CommandHandler clientCommands, serverCommands;
+    public static boolean input = true;
 }

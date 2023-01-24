@@ -2,15 +2,12 @@ package org.ru.vortex.modules.database.models;
 
 public class PlayerData {
 
+    public final String translatorLanguage = "off";
     public String uuid;
     public long discord = 0L;
-
     public int blocksBuilt = 0;
     public int blocksBroken = 0;
-
     public int gamesPlayed = 0;
-
-    public final String translatorLanguage = "off";
 
     @SuppressWarnings("unused")
     public PlayerData() {}

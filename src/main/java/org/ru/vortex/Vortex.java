@@ -3,8 +3,7 @@ package org.ru.vortex;
 import static arc.Core.app;
 import static mindustry.Vars.netServer;
 import static mindustry.net.Packets.KickReason.serverRestarting;
-import static org.ru.vortex.PluginVars.clientCommands;
-import static org.ru.vortex.PluginVars.serverCommands;
+import static org.ru.vortex.PluginVars.*;
 
 import arc.ApplicationListener;
 import arc.util.*;
@@ -28,9 +27,10 @@ public class Vortex extends Plugin {
                 @Override
                 public void dispose() {
                     Log.infoTag("Shutdown", "The server will now be shut down!");
+                    input = false;
 
                     netServer.kickAll(serverRestarting);
-                    app.post(Bot::disconnect);
+                    Bot.disconnect();
                     app.exit();
                 }
             }

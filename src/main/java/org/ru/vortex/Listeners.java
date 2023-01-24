@@ -3,10 +3,12 @@ package org.ru.vortex;
 import static arc.Core.app;
 import static arc.util.Log.info;
 import static mindustry.Vars.netServer;
+import static mindustry.Vars.player;
 import static mindustry.game.EventType.*;
 import static org.ru.vortex.PluginVars.brokenBlocksCache;
 import static org.ru.vortex.PluginVars.placedBlocksCache;
-import static org.ru.vortex.modules.Bundler.*;
+import static org.ru.vortex.modules.Bundler.sendLocalized;
+import static org.ru.vortex.modules.Bundler.sendLocalizedAll;
 import static org.ru.vortex.modules.database.Database.*;
 import static org.ru.vortex.modules.discord.Bot.*;
 import static org.ru.vortex.utils.Utils.kickLocalized;
@@ -34,8 +36,9 @@ public class Listeners {
         Events.on(
             PlayerJoin.class,
             event -> {
-                sendLocalizedAll("events.player-joined", event.player.plainName());
-                sendLocalized(event.player, "events.welcome", event.player.coloredName(), PluginVars.serverLink);
+                info("@ joined", player.name);
+                sendLocalizedAll("events.player-joined", event.player.name());
+                sendLocalized(event.player, "events.welcome", event.player.name(), PluginVars.serverLink);
                 sendEmbed(botChannel, "@ joined", event.player.plainName());
                 app.post(Bot::updateStatus);
             }
