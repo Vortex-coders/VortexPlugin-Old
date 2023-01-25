@@ -3,7 +3,8 @@ package org.ru.vortex;
 import static arc.Core.app;
 import static mindustry.Vars.netServer;
 import static mindustry.net.Packets.KickReason.serverRestarting;
-import static org.ru.vortex.PluginVars.*;
+import static org.ru.vortex.PluginVars.clientCommands;
+import static org.ru.vortex.PluginVars.serverCommands;
 
 import arc.ApplicationListener;
 import arc.util.*;
@@ -14,7 +15,6 @@ import org.ru.vortex.modules.Config;
 import org.ru.vortex.modules.console.Console;
 import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.modules.discord.Bot;
-import org.ru.vortex.modules.history.History;
 
 @SuppressWarnings("unused")
 public class Vortex extends Plugin {
@@ -27,11 +27,9 @@ public class Vortex extends Plugin {
                 @Override
                 public void dispose() {
                     Log.infoTag("Shutdown", "The server will now be shut down!");
-                    input = false;
 
                     netServer.kickAll(serverRestarting);
-                    Bot.disconnect();
-                    app.exit();
+                    app.post(Bot::disconnect);
                 }
             }
         );
@@ -44,10 +42,9 @@ public class Vortex extends Plugin {
 
         Console.init();
         Config.init();
-        Database.connect();
+        Database.init();
         Bot.init();
         Listeners.init();
-        History.init();
 
         Version.build = -1;
 

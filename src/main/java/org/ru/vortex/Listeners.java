@@ -14,23 +14,15 @@ import static org.ru.vortex.modules.discord.Bot.*;
 import static org.ru.vortex.utils.Utils.kickLocalized;
 
 import arc.Events;
-import arc.math.geom.Vec2;
 import arc.util.Time;
 import java.time.Duration;
-import java.util.ArrayList;
 import mindustry.gen.Groups;
-import mindustry.gen.Player;
 import org.ru.vortex.modules.discord.Bot;
-import org.ru.vortex.modules.history.History;
-import org.ru.vortex.modules.history.components.BlockChangeType;
-import org.ru.vortex.modules.history.components.FormattedEntry;
-import org.ru.vortex.utils.Pipe;
 import reactor.core.scheduler.Schedulers;
 
 public class Listeners {
 
     public static void init() {
-        Events.on(WorldLoadEvent.class, event -> History.initHistory());
         Events.on(ServerLoadEvent.class, event -> sendEmbed(botChannel, "Server launched"));
 
         Events.on(
@@ -103,104 +95,6 @@ public class Listeners {
                             );
                         }
                     });
-            }
-        );
-
-        Events.on(
-            TapEvent.class,
-            event -> {
-                if (!History.enabledHistory.contains(event.player)) return;
-
-                Player player = event.player;
-
-                byte additionalDataSize = History.additionalDataSize();
-                int xShift = additionalDataSize + History.yBites;
-                long xBiteValueMask = ((long) Math.pow(2, History.xBites) - 1) << xShift;
-                long yBiteValueMask = ((long) Math.pow(2, History.yBites) - 1) << (int) additionalDataSize;
-
-                ArrayList<FormattedEntry> tileHistory = new ArrayList<>();
-
-                for (int i = 0, length = History.history.size(); i < length; i++) {
-                    long packaged = History.history.get(i);
-
-                    if (
-                        (packaged & xBiteValueMask) >> xShift == event.tile.x &&
-                        (packaged & yBiteValueMask) >> (int) additionalDataSize == event.tile.y
-                    ) tileHistory.add(History.decompressHistory(packaged));
-                }
-
-                tileHistory.forEach(tileEntry -> {
-                    switch (tileEntry.changeType()) {
-                        case Built -> sendLocalized(player, "history.block.built", tileEntry.block().localizedName, player.name);
-                        case Destroyed -> sendLocalized(player, "history.block.destroyed", tileEntry.block().localizedName, player.name);
-                        case PayloadDrop -> sendLocalized(
-                            player,
-                            "history.block.payload-drop",
-                            tileEntry.block().localizedName,
-                            player.name
-                        );
-                        case Pickup -> sendLocalized(player, "history.block.pickup", tileEntry.block().localizedName, player.name);
-                    }
-                });
-            }
-        );
-
-        Events.on(
-            BlockBuildEndEvent.class,
-            event -> {
-                if (!event.unit.isPlayer()) return;
-
-                FormattedEntry historyEntry;
-                Player player = event.unit.getPlayer();
-
-                var playerInfo = player.getInfo();
-                var position = new Vec2(event.tile.x, event.tile.y);
-
-                if (event.breaking) {
-                    brokenBlocksCache.increment(player.id);
-                    historyEntry = BlockChangeType.Destroyed.formatEntry(playerInfo, event.tile.block(), position);
-                } else {
-                    placedBlocksCache.increment(player.id);
-                    historyEntry = BlockChangeType.Built.formatEntry(playerInfo, event.tile.block(), position);
-                }
-
-                Pipe.apply(historyEntry).pipe(History::compressHistory).pipe(History.history::add);
-            }
-        );
-
-        Events.on(
-            PickupEvent.class,
-            event -> {
-                if (event.build == null || event.carrier.getPlayer() == null || event.carrier.getPlayer().getInfo() == null) return;
-
-                Pipe
-                    .apply(
-                        BlockChangeType.Pickup.formatEntry(
-                            event.carrier.getPlayer().getInfo(),
-                            event.build.block,
-                            new Vec2(event.build.tileX(), event.build.tileY())
-                        )
-                    )
-                    .pipe(History::compressHistory)
-                    .pipe(History.history::add);
-            }
-        );
-
-        Events.on(
-            PayloadDropEvent.class,
-            event -> {
-                if (event.build == null || event.carrier.getPlayer() == null || event.carrier.getPlayer().getInfo() == null) return;
-
-                Pipe
-                    .apply(
-                        BlockChangeType.PayloadDrop.formatEntry(
-                            event.carrier.getPlayer().getInfo(),
-                            event.build.block,
-                            new Vec2(event.build.tileX(), event.build.tileY())
-                        )
-                    )
-                    .pipe(History::compressHistory)
-                    .pipe(History.history::add);
             }
         );
 

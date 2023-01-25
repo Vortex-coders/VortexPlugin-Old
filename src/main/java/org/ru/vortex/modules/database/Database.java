@@ -28,7 +28,7 @@ public class Database {
     public static MongoCollection<PlayerData> playersCollection;
     public static MongoCollection<BanData> bansCollection;
 
-    public static void connect() {
+    public static void init() {
         try {
             client = MongoClients.create(config.mongoUrl);
             database =

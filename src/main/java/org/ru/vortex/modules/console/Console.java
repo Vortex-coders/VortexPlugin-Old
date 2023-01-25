@@ -4,7 +4,6 @@ import static arc.Core.app;
 import static arc.util.Log.*;
 import static java.lang.System.setOut;
 import static org.jline.utils.AttributedString.fromAnsi;
-import static org.ru.vortex.PluginVars.*;
 
 import arc.struct.Seq;
 import arc.util.CommandHandler;
@@ -40,7 +39,7 @@ public class Console {
 
         serverControl.serverInput =
             () -> {
-                while (input) {
+                while (true) {
                     try {
                         String line = lineReader.readLine();
                         if (!line.isEmpty()) app.post(() -> serverControl.handleCommandString(line));

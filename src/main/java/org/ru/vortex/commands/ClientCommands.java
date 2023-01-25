@@ -5,7 +5,6 @@ import static mindustry.gen.Call.openURI;
 import static org.ru.vortex.PluginVars.*;
 import static org.ru.vortex.modules.Bundler.*;
 import static org.ru.vortex.modules.GameOAuth.sendAdminRequest;
-import static org.ru.vortex.modules.history.History.enabledHistory;
 import static org.ru.vortex.utils.Checks.ifTimeoutCheck;
 import static org.ru.vortex.utils.Oauth.getAuthLink;
 import static org.ru.vortex.utils.Oauth.isAuthorized;
@@ -52,18 +51,6 @@ public class ClientCommands {
 
                 sendLocalizedAll("commands.rtv.vote-passed");
                 Events.fire(new EventType.GameOverEvent(Team.crux));
-            }
-        );
-
-        register(
-            "history",
-            (args, player) -> {
-                if (enabledHistory.contains(player)) {
-                    enabledHistory.remove(player);
-                    return;
-                }
-
-                enabledHistory.add(player);
             }
         );
 
