@@ -1,26 +1,34 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+import fr.xpdustry.toxopid.dsl.anukenJitpack
+import fr.xpdustry.toxopid.dsl.mindustryDependencies
+import fr.xpdustry.toxopid.spec.ModMetadata
+import fr.xpdustry.toxopid.spec.ModPlatform.HEADLESS
 import org.apache.tools.ant.taskdefs.condition.Os
-
-plugins {
-    id("java")
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-}
 
 group = "org.ru.vortex"
 version = "1.0.0"
 
+plugins {
+    id("java")
+    id("fr.xpdustry.toxopid") version "3.0.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+}
+
+toxopid {
+    compileVersion.set("v141.3")
+    runtimeVersion.set("v141.3")
+    platforms.add(HEADLESS)
+}
+
 repositories {
     mavenCentral()
-    maven(url = "https://jitpack.io")
+    anukenJitpack()
 }
 
 dependencies {
-    val mindustryVersion = "v141.2"
+    mindustryDependencies()
 
     compileOnly("org.projectlombok:lombok:1.18.24")
-    compileOnly("com.github.Anuken.Arc:arc-core:$mindustryVersion")
-    compileOnly("com.github.Anuken.Mindustry:core:$mindustryVersion")
-    compileOnly("com.github.Anuken.Mindustry:server:$mindustryVersion")
 
     implementation("org.jline:jline-reader:3.21.0")
     implementation("org.jline:jline-console:3.21.0")
@@ -30,7 +38,6 @@ dependencies {
     implementation("net.dv8tion:JDA:5.0.0-beta.2")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.19.0")
-    // implementation("com.github.xzxADIxzx.useful-stuffs:server-menus:3261ff23ac")
 
     implementation(("io.projectreactor:reactor-core"))
     implementation("org.mongodb:mongodb-driver-reactivestreams:4.8.1")
@@ -46,10 +53,25 @@ tasks.withType<JavaCompile> {
     targetCompatibility = "16"
 }
 
-tasks.jar {
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
+val metadata = ModMetadata(
+    name = "vortex-plugin",
+    displayName = "Vortex Plugin",
+    author = "lucin, OSPx, nekonya, SSTentaclesSS",
+    description = """
+        A main plugin for vortex servers
+
+        Check out our repository:
+        + https://github.com/Vortex-coders/VortexPlugin
+
+        Thanks for contributing:
+        + lucin
+        + OSPx
+        + nekonya
+        + SSTentaclesSS
+    """.trimIndent(),
+    version = project.version.toString(),
+    main = "org.ru.vortex.Vortex"
+)
 
 val relocate = tasks.register<ConfigureShadowRelocation>("relocateShadowJar") {
     target = tasks.shadowJar.get()
@@ -57,6 +79,12 @@ val relocate = tasks.register<ConfigureShadowRelocation>("relocateShadowJar") {
 }
 
 tasks.shadowJar {
+    doFirst {
+        val temp = temporaryDir.resolve("mod.json")
+        temp.writeText(metadata.toJson(true))
+        from(temp)
+    }
+
     archiveFileName.set("VortexPlugin.jar")
     archiveClassifier.set("plugin")
     dependsOn(relocate)
