@@ -6,7 +6,7 @@ import static org.ru.vortex.PluginVars.*;
 import static org.ru.vortex.modules.Bundler.*;
 import static org.ru.vortex.modules.GameOAuth.sendAdminRequest;
 import static org.ru.vortex.modules.history.History.enabledHistory;
-import static org.ru.vortex.utils.Checks.timeoutCheck;
+import static org.ru.vortex.utils.Checks.ifTimeoutCheck;
 import static org.ru.vortex.utils.Oauth.getAuthLink;
 import static org.ru.vortex.utils.Oauth.isAuthorized;
 import static org.ru.vortex.utils.Timeouts.timeout;
@@ -96,7 +96,7 @@ public class ClientCommands {
             getLocalized(format("commands.@.parameters", name)),
             getLocalized(format("commands.@.description", name)),
             (args, player) -> {
-                if (timeoutCheck(player, name)) return;
+                if (ifTimeoutCheck(player, name)) return;
                 runner.accept(args, player);
                 timeout(player, name);
             }
