@@ -23,6 +23,7 @@ import mindustry.gen.Groups;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.TimeFormat;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -66,8 +67,10 @@ public class Bot {
                 );
 
             infoTag("Discord", format("Bot connected in as @", jda.getSelfUser().getAsTag()));
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IllegalArgumentException e) {
             Log.errTag("Discord", format("Cannot connect to discord: @", e));
+        } catch (InvalidTokenException e) {
+            Log.errTag("Discord", format("Invalid discord bot token: @", e));
         }
     }
 
