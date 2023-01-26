@@ -5,6 +5,7 @@ import static mindustry.gen.Call.openURI;
 import static org.ru.vortex.PluginVars.*;
 import static org.ru.vortex.modules.Bundler.*;
 import static org.ru.vortex.modules.GameOAuth.sendAdminRequest;
+import static org.ru.vortex.modules.history.History.activeHistoryPlayers;
 import static org.ru.vortex.utils.Checks.ifTimeoutCheck;
 import static org.ru.vortex.utils.Oauth.getAuthLink;
 import static org.ru.vortex.utils.Oauth.isAuthorized;
@@ -21,6 +22,16 @@ public class ClientCommands {
 
     public static void init() {
         register("discord", (args, player) -> openURI(player.con, serverLink));
+
+        register("history", (args, player) -> {
+            if (activeHistoryPlayers.contains(player)) {
+                activeHistoryPlayers.remove(player);
+                sendLocalized(player, "commands.history.disabled");
+            } else {
+                activeHistoryPlayers.add(player);
+                sendLocalized(player, "commands.history.enabled");
+            }
+        });
 
         register(
             "rtv",

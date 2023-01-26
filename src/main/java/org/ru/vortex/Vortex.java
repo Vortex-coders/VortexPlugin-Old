@@ -15,6 +15,7 @@ import org.ru.vortex.modules.Config;
 import org.ru.vortex.modules.console.Console;
 import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.modules.discord.Bot;
+import org.ru.vortex.modules.history.History;
 
 @SuppressWarnings("unused")
 public class Vortex extends Plugin {
@@ -45,6 +46,7 @@ public class Vortex extends Plugin {
         Database.init();
         Bot.init();
         Listeners.init();
+        History.init();
 
         Version.build = -1;
 
