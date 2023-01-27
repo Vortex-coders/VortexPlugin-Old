@@ -1,17 +1,18 @@
 package org.ru.vortex.utils;
 
-import static org.ru.vortex.PluginVars.discordAuthString;
-
 import mindustry.gen.Player;
 import org.ru.vortex.PluginVars;
 import org.ru.vortex.modules.database.Database;
+
+import static org.ru.vortex.PluginVars.discordAuthString;
 
 /**
  * Class contains static OauthMethods
  *
  * @author nekonya
  */
-public class Oauth {
+public class Oauth
+{
 
     /**
      * Generate auth link using player uuid
@@ -20,7 +21,8 @@ public class Oauth {
      * @return http string ready-to-use
      * @see PluginVars#discordAuthString
      */
-    public static String getAuthLink(Player p) {
+    public static String getAuthLink(Player p)
+    {
         return discordAuthString + p.uuid();
     }
 
@@ -30,7 +32,8 @@ public class Oauth {
      * @param p target player
      * @return boolean value of player's authorization
      */
-    public static boolean isAuthorized(Player p) {
+    public static boolean isAuthorized(Player p)
+    {
         return getDiscordID(p) != -1;
     }
 
@@ -41,7 +44,8 @@ public class Oauth {
      * @return ID of this player, -1 if not authorized
      * @see #getDiscordID(String)
      */
-    public static Long getDiscordID(Player p) {
+    public static Long getDiscordID(Player p)
+    {
         return getDiscordID(p.uuid());
     }
 
@@ -51,7 +55,8 @@ public class Oauth {
      * @param uuid string(player uuid)
      * @return ID associated with this UUID, -1 if not authorized
      */
-    public static Long getDiscordID(String uuid) {
+    public static Long getDiscordID(String uuid)
+    {
         return Pipe.apply(Database.getPlayerData(uuid).block()).result().discord;
     }
 }

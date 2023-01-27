@@ -1,5 +1,9 @@
 package org.ru.vortex.modules;
 
+import arc.files.Fi;
+import arc.util.Log;
+import arc.util.Strings;
+
 import static arc.Core.app;
 import static mindustry.Vars.dataDirectory;
 import static mindustry.net.Administration.Config.*;
@@ -8,11 +12,8 @@ import static org.ru.vortex.PluginVars.gson;
 import static org.ru.vortex.modules.Config.Gamemode.hub;
 import static org.ru.vortex.modules.Config.Gamemode.survival;
 
-import arc.files.Fi;
-import arc.util.Log;
-import arc.util.Strings;
-
-public class Config {
+public class Config
+{
 
     public String token = "";
     public String prefix = "";
@@ -25,12 +26,16 @@ public class Config {
     public String bansChannelId = "";
     public Gamemode gamemode = survival;
 
-    public static void init() {
+    public static void init()
+    {
         Fi file = dataDirectory.child("config.json");
 
-        if (file.exists()) {
+        if (file.exists())
+        {
             config = gson.fromJson(file.reader(), Config.class);
-        } else {
+        }
+        else
+        {
             file.writeString(gson.toJson(config = new Config()));
             Log.infoTag("Config", Strings.format("Config generated in @", file.absolutePath()));
             app.exit();
@@ -59,14 +64,16 @@ public class Config {
         snapshotInterval.set(250);
     }
 
-    public enum Gamemode {
+    public enum Gamemode
+    {
         attack,
         hub,
         pvp,
         sandbox,
         survival;
 
-        public boolean isDefault() {
+        public boolean isDefault()
+        {
             return (this == attack || this == pvp || this == sandbox || this == survival);
         }
     }

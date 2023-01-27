@@ -1,31 +1,42 @@
 package org.ru.vortex.modules.console;
 
-import static org.ru.vortex.modules.console.Console.commandList;
-
-import java.util.regex.Pattern;
 import org.jline.reader.Highlighter;
 import org.jline.reader.LineReader;
-import org.jline.utils.*;
+import org.jline.utils.AttributedString;
+import org.jline.utils.AttributedStringBuilder;
+import org.jline.utils.AttributedStyle;
 
-public class CommandHighlighter implements Highlighter {
+import java.util.regex.Pattern;
+
+import static org.ru.vortex.modules.console.Console.commandList;
+
+public class CommandHighlighter implements Highlighter
+{
 
     @Override
-    public AttributedString highlight(LineReader reader, String buffer) {
+    public AttributedString highlight(LineReader reader, String buffer)
+    {
         AttributedStringBuilder builder = new AttributedStringBuilder();
         builder.style(new AttributedStyle().foreground(AttributedStyle.RED));
 
         String command;
 
-        try {
+        try
+        {
             command = buffer.split(" ")[0];
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             command = buffer;
         }
 
-        if (commandList.contains(command)) {
+        if (commandList.contains(command))
+        {
             builder.style(new AttributedStyle().foreground(AttributedStyle.GREEN));
             builder.append(buffer);
-        } else {
+        }
+        else
+        {
             builder.style(new AttributedStyle().foreground(AttributedStyle.RED));
             builder.append(buffer);
         }
@@ -34,8 +45,12 @@ public class CommandHighlighter implements Highlighter {
     }
 
     @Override
-    public void setErrorPattern(Pattern errorPattern) {}
+    public void setErrorPattern(Pattern errorPattern)
+    {
+    }
 
     @Override
-    public void setErrorIndex(int errorIndex) {}
+    public void setErrorIndex(int errorIndex)
+    {
+    }
 }

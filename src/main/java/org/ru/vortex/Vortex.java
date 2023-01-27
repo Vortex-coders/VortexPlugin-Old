@@ -1,43 +1,53 @@
 package org.ru.vortex;
 
-import static arc.Core.app;
-import static mindustry.Vars.netServer;
-import static mindustry.net.Packets.KickReason.serverRestarting;
-import static org.ru.vortex.PluginVars.clientCommands;
-import static org.ru.vortex.PluginVars.serverCommands;
-
 import arc.ApplicationListener;
-import arc.util.*;
+import arc.util.CommandHandler;
+import arc.util.Log;
+import arc.util.Strings;
+import arc.util.Time;
 import mindustry.core.Version;
 import mindustry.mod.Plugin;
-import org.ru.vortex.commands.*;
+import org.ru.vortex.commands.AdminCommands;
+import org.ru.vortex.commands.ClientCommands;
+import org.ru.vortex.commands.ServerCommands;
 import org.ru.vortex.modules.Config;
 import org.ru.vortex.modules.console.Console;
 import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.modules.discord.Bot;
 import org.ru.vortex.modules.history.History;
 
-@SuppressWarnings("unused")
-public class Vortex extends Plugin {
+import static arc.Core.app;
+import static mindustry.Vars.netServer;
+import static mindustry.net.Packets.KickReason.serverRestarting;
+import static org.ru.vortex.PluginVars.clientCommands;
+import static org.ru.vortex.PluginVars.serverCommands;
 
-    public Vortex() {
+@SuppressWarnings("unused")
+public class Vortex extends Plugin
+{
+
+    public Vortex()
+    {
         Log.infoTag("Vortex", "Loading");
 
         app.addListener(
-            new ApplicationListener() {
-                @Override
-                public void dispose() {
-                    Log.infoTag("Shutdown", "The server will now be shut down!");
+                new ApplicationListener()
+                {
+                    @Override
+                    public void dispose()
+                    {
+                        Log.infoTag("Shutdown", "The server will now be shut down!");
 
-                    netServer.kickAll(serverRestarting);
-                    app.post(Bot::disconnect);
+                        netServer.kickAll(serverRestarting);
+                        app.post(Bot::disconnect);
+                    }
                 }
-            }
         );
     }
 
     @Override
-    public void init() {
+    public void init()
+    {
         Log.infoTag("Vortex", "Starting");
         Time.mark();
 
@@ -54,7 +64,8 @@ public class Vortex extends Plugin {
     }
 
     @Override
-    public void registerClientCommands(CommandHandler handler) {
+    public void registerClientCommands(CommandHandler handler)
+    {
         clientCommands = handler;
 
         ClientCommands.init();
@@ -62,7 +73,8 @@ public class Vortex extends Plugin {
     }
 
     @Override
-    public void registerServerCommands(CommandHandler handler) {
+    public void registerServerCommands(CommandHandler handler)
+    {
         serverCommands = handler;
 
         ServerCommands.init();

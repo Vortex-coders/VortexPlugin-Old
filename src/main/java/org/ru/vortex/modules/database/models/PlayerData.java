@@ -1,6 +1,7 @@
 package org.ru.vortex.modules.database.models;
 
-public class PlayerData {
+public class PlayerData
+{
 
     public final String translatorLanguage = "off";
     public String uuid;
@@ -10,14 +11,18 @@ public class PlayerData {
     public int gamesPlayed = 0;
 
     @SuppressWarnings("unused")
-    public PlayerData() {}
+    public PlayerData()
+    {
+    }
 
-    public PlayerData(String uuid) {
+    public PlayerData(String uuid)
+    {
         this.uuid = uuid;
         this.discord = -1;
     }
 
-    public PlayerData(String uuid, long discord) {
+    public PlayerData(String uuid, long discord)
+    {
         this.uuid = uuid;
         this.discord = discord;
     }

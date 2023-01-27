@@ -2,7 +2,8 @@ package org.ru.vortex.modules.database.models;
 
 import arc.func.Cons;
 
-public class BanData {
+public class BanData
+{
 
     public String uuid;
     public String ip;
@@ -14,9 +15,12 @@ public class BanData {
     public long unbanDate;
 
     @SuppressWarnings("unused")
-    public BanData() {}
+    public BanData()
+    {
+    }
 
-    public BanData(Cons<BanData> consumer) {
+    public BanData(Cons<BanData> consumer)
+    {
         consumer.get(this);
     }
 }
