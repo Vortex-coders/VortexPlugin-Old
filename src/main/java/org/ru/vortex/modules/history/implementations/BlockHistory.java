@@ -2,45 +2,34 @@ package org.ru.vortex.modules.history.implementations;
 
 import arc.util.Time;
 import mindustry.gen.Player;
-import mindustry.world.Block;
+import mindustry.world.blocks.ConstructBlock;
+import org.ru.vortex.modules.Bundler;
 import org.ru.vortex.modules.history.ObjectHistory;
 
-import java.util.concurrent.TimeUnit;
-
+import static mindustry.Vars.content;
 import static mindustry.game.EventType.BlockBuildEndEvent;
 
 public class BlockHistory implements ObjectHistory
 {
-    private final Block block;
-    private final int rotation;
-    private final String target;
-    private final boolean breaking;
-    private final long lastAccessTime = Time.millis();
+    public final String name;
+    public final short blockID;
+    public final byte rotation;
+    public final boolean breaking;
+    public final long time;
 
     public BlockHistory(BlockBuildEndEvent event)
     {
-        this.block = event.tile.block();
-        this.rotation = event.tile.build.rotation;
-        this.target = event.unit.isPlayer() ? event.unit.getPlayer().name : event.unit.controller() instanceof Player ? event.unit.getPlayer().name : null;
+        this.name = event.unit.getPlayer().coloredName();
+        this.blockID = event.tile.build instanceof ConstructBlock.ConstructBuild build ? build.current.id : event.tile.blockID();
+        this.rotation = (byte) event.tile.build.rotation;
         this.breaking = event.breaking;
+        this.time = Time.millis();
     }
 
     @Override
     public String getMessage(Player player)
     {
-        StringBuilder builder;
-
-        if (breaking)
-        {
-            return null;
-        }
-
-        return null;
-    }
-
-    @Override
-    public long getLastAccessTime(TimeUnit unit)
-    {
-        return unit.convert(Time.timeSinceMillis(lastAccessTime), TimeUnit.MILLISECONDS);
+        var block = content.block(blockID);
+        return Bundler.getLocalized(player, breaking ? "history.deconstruct" : block.rotate ? "history.construct.rotate" : "history.construct", name /* formatShortDate(time), sides[rotation] */);
     }
 }
