@@ -25,10 +25,27 @@ public class ClientCommands
         register("discord", (args, player) -> openURI(player.con, serverLink));
 
         register(
-                "history",
+                "login",
                 (args, player) ->
                 {
+                    if (player.admin)
+                    {
+                        sendLocalized(player, "already-admin");
+                        return;
+                    }
 
+                    sendAdminRequest(player);
+                    sendLocalized(player, "commands.login.wait");
+                }
+        );
+
+        register(
+                "register",
+                (args, player) ->
+                {
+                    if (isAuthorized(player)) return;
+
+                    openURI(player.con, getAuthLink(player));
                 }
         );
 
@@ -65,31 +82,6 @@ public class ClientCommands
 
                     sendLocalizedAll("commands.rtv.vote-passed");
                     Events.fire(new EventType.GameOverEvent(Team.crux));
-                }
-        );
-
-        register(
-                "login",
-                (args, player) ->
-                {
-                    if (player.admin)
-                    {
-                        sendLocalized(player, "already-admin");
-                        return;
-                    }
-
-                    sendAdminRequest(player);
-                    sendLocalized(player, "commands.login.wait");
-                }
-        );
-
-        register(
-                "register",
-                (args, player) ->
-                {
-                    if (isAuthorized(player)) return;
-
-                    openURI(player.con, getAuthLink(player));
                 }
         );
     }

@@ -163,41 +163,41 @@ public class Pipe<A>
     @FunctionalInterface
     public interface ErrorableFunction<A, R>
     {
-        R apply(A a) throws Throwable;
+        R apply(A a);
     }
 
     @FunctionalInterface
     public interface ErrorableBiFunction<A, B, R>
     {
-        R apply(A a, B b) throws Throwable;
+        R apply(A a, B b);
     }
 
     @FunctionalInterface
     public interface ErrorableTriFunction<A, B, C, R>
     {
-        R apply(A a, B b, C c) throws Throwable;
+        R apply(A a, B b, C c);
     }
 
     @FunctionalInterface
     public interface ErrorableQuadriFunction<A, B, C, D, R>
     {
-        R apply(A a, B b, C c, D d) throws Throwable;
+        R apply(A a, B b, C c, D d);
     }
 
     @FunctionalInterface
     public interface ErrorableConsumer<A>
     {
-        void accept(A a) throws Throwable;
+        void accept(A a);
     }
 
     @FunctionalInterface
     public interface ErrorableSupplier<A>
     {
-        A get() throws Throwable;
+        A get();
     }
 
     public interface ErrorableRunnable
     {
-        void run() throws Throwable;
+        void run();
     }
 }
