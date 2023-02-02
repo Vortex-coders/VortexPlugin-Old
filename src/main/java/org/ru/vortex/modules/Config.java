@@ -15,16 +15,16 @@ import static org.ru.vortex.modules.Config.Gamemode.survival;
 public class Config
 {
 
-    public final String token = "";
-    public final String prefix = "";
-    public final String mongoUrl = "";
-    public final String name = "";
-    public final String description = "";
-    public final String channelId = "";
-    public final String adminRoleId = "";
-    public final String adminChannelId = "";
-    public final String bansChannelId = "";
-    public final Gamemode gamemode = survival;
+    public String token = "";
+    public String prefix = "";
+    public String mongoUrl = "";
+    public String name = "";
+    public String description = "";
+    public String channelId = "";
+    public String adminRoleId = "";
+    public String adminChannelId = "";
+    public String bansChannelId = "";
+    public Gamemode gamemode = survival;
 
     public static void init()
     {
