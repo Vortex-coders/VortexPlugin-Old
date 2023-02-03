@@ -3,7 +3,6 @@ import fr.xpdustry.toxopid.dsl.anukenJitpack
 import fr.xpdustry.toxopid.dsl.mindustryDependencies
 import fr.xpdustry.toxopid.spec.ModMetadata
 import fr.xpdustry.toxopid.spec.ModPlatform.HEADLESS
-import org.apache.tools.ant.taskdefs.condition.Os
 
 group = "org.ru.vortex"
 version = "1.0.0"
@@ -29,11 +28,6 @@ dependencies {
     mindustryDependencies()
 
     compileOnly("org.projectlombok:lombok:1.18.24")
-
-    implementation("org.jline:jline-reader:3.21.0")
-    implementation("org.jline:jline-console:3.21.0")
-    if (Os.isFamily(Os.FAMILY_WINDOWS))
-        implementation("org.jline:jline-terminal-jna:3.21.0")
 
     implementation("net.dv8tion:JDA:5.0.0-beta.2")
     implementation("com.google.code.gson:gson:2.10.1")

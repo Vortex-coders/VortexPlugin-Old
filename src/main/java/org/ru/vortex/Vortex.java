@@ -11,7 +11,6 @@ import org.ru.vortex.commands.AdminCommands;
 import org.ru.vortex.commands.ClientCommands;
 import org.ru.vortex.commands.ServerCommands;
 import org.ru.vortex.modules.Config;
-import org.ru.vortex.modules.console.Console;
 import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.modules.discord.Bot;
 import org.ru.vortex.modules.history.History;
@@ -51,7 +50,6 @@ public class Vortex extends Plugin
         Log.infoTag("Vortex", "Starting");
         Time.mark();
 
-        Console.init();
         Config.init();
         Database.init();
         Bot.init();

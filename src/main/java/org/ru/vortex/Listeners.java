@@ -33,8 +33,8 @@ public class Listeners
                 event ->
                 {
                     info("@ joined", player.name);
-                    sendLocalizedAll("events.player-joined", event.player.name());
-                    sendLocalized(event.player, "events.welcome", event.player.name(), PluginVars.serverLink);
+                    sendLocalizedAll("events.player-joined", event.player.name);
+                    sendLocalized(event.player, "events.welcome", event.player.name, PluginVars.serverLink);
                     sendEmbed(botChannel, "@ joined", event.player.plainName());
                     app.post(Bot::updateStatus);
                 }
