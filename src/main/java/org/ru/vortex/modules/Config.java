@@ -14,16 +14,11 @@ import static org.ru.vortex.modules.Config.Gamemode.survival;
 
 public class Config
 {
-
-    public String token = "";
-    public String prefix = "";
-    public String mongoUrl = "";
     public String name = "";
     public String description = "";
-    public String channelId = "";
-    public String adminRoleId = "";
-    public String adminChannelId = "";
-    public String bansChannelId = "";
+    public String mongoUrl = "";
+    public String webhookUrl = "";
+    public long webhookThread = 0L;
     public Gamemode gamemode = survival;
 
     public static void init()

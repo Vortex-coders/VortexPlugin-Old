@@ -11,9 +11,8 @@ import org.ru.vortex.commands.AdminCommands;
 import org.ru.vortex.commands.ClientCommands;
 import org.ru.vortex.commands.ServerCommands;
 import org.ru.vortex.modules.Config;
+import org.ru.vortex.modules.Webhook;
 import org.ru.vortex.modules.database.Database;
-import org.ru.vortex.modules.discord.Bot;
-import org.ru.vortex.modules.history.History;
 
 import static arc.Core.app;
 import static mindustry.Vars.netServer;
@@ -38,7 +37,7 @@ public class Vortex extends Plugin
                         Log.infoTag("Shutdown", "The server will now be shut down!");
 
                         netServer.kickAll(serverRestarting);
-                        app.post(Bot::disconnect);
+                        app.post(Webhook::disconnect);
                     }
                 }
         );
@@ -52,9 +51,8 @@ public class Vortex extends Plugin
 
         Config.init();
         Database.init();
-        Bot.init();
         Listeners.init();
-        History.init();
+        Webhook.init();
 
         Version.build = -1;
 

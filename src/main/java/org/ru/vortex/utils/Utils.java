@@ -6,7 +6,6 @@ import mindustry.gen.Player;
 import mindustry.net.NetConnection;
 import org.ru.vortex.modules.database.Database;
 import org.ru.vortex.modules.database.models.BanData;
-import org.ru.vortex.modules.discord.Bot;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +35,7 @@ public class Utils
         });
 
         Database.setBan(ban).subscribe();
-        Bot.sendBanMessage(ban);
+        // TODO: Bot.sendBanMessage(ban);
     }
 
     public static void kickLocalized(Player player, String key, Object... objects)

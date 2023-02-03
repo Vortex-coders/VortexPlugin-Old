@@ -29,8 +29,8 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok:1.18.24")
 
-    implementation("net.dv8tion:JDA:5.0.0-beta.2")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("club.minnced:discord-webhooks:0.8.2")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.19.0")
 
     implementation(("io.projectreactor:reactor-core"))
