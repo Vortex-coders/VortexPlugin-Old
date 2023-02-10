@@ -56,7 +56,7 @@ public class Vortex extends Plugin
 
         Version.build = -1;
 
-        Log.infoTag("Vortex", Strings.format("Loaded in @", Time.elapsed()));
+        Log.infoTag("Vortex", Strings.format("Loaded in @ ms", Time.elapsed()));
     }
 
     @Override

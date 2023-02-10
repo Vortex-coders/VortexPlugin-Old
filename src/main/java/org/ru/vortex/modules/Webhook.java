@@ -47,7 +47,7 @@ public class Webhook
 
     public static void sendFrom(Player player, String message)
     {
-        client.send(new WebhookMessageBuilder().setContent(Strings.format("**`@:`** @", player.plainName(), message)).build());
+        client.send(new WebhookMessageBuilder().setContent(Strings.format("**`@:`** @", player.plainName(), message.replace("@", ""))).build());
     }
 
     public static void sendInfo(String content, Object... objects)

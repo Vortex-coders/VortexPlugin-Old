@@ -5,7 +5,7 @@ import fr.xpdustry.toxopid.spec.ModMetadata
 import fr.xpdustry.toxopid.spec.ModPlatform.HEADLESS
 
 group = "org.ru.vortex"
-version = "1.0.0"
+version = "1.0.1"
 
 plugins {
     id("java")
