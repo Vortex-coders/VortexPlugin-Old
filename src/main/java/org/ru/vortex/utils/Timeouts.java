@@ -13,7 +13,7 @@ public class Timeouts
     public static boolean hasTimeout(Player player, String command)
     {
         var map = timeouts.get(player.uuid());
-        return map != null && map.containsKey(command);
+        return map != null && map.containsKey(command) && map.get(command) > Time.millis();
     }
 
     public static boolean isRunnable(Player player, String command)
