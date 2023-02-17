@@ -1,15 +1,10 @@
 package org.ru.vortex;
 
 import arc.ApplicationListener;
-import arc.util.CommandHandler;
-import arc.util.Log;
-import arc.util.Strings;
-import arc.util.Time;
+import arc.util.*;
 import mindustry.core.Version;
 import mindustry.mod.Plugin;
-import org.ru.vortex.commands.AdminCommands;
-import org.ru.vortex.commands.ClientCommands;
-import org.ru.vortex.commands.ServerCommands;
+import org.ru.vortex.commands.*;
 import org.ru.vortex.modules.Config;
 import org.ru.vortex.modules.Webhook;
 import org.ru.vortex.modules.database.Database;
