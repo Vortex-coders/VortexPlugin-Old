@@ -5,6 +5,7 @@ import arc.util.CommandHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.ru.vortex.modules.Config;
+import org.ru.vortex.modules.InterServerCommunicator;
 
 import java.util.HashSet;
 
@@ -26,6 +27,8 @@ public class PluginVars
             .serializeNulls()
             .disableHtmlEscaping()
             .create();
+
+    public static InterServerCommunicator communicator;
 
     public static final double rtvRatio = 0.6;
     public static final HashSet<String> rtvVotes = new HashSet<>();

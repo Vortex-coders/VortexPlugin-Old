@@ -6,14 +6,14 @@ import mindustry.core.Version;
 import mindustry.mod.Plugin;
 import org.ru.vortex.commands.*;
 import org.ru.vortex.modules.Config;
+import org.ru.vortex.modules.InterServerCommunicator;
 import org.ru.vortex.modules.Webhook;
 import org.ru.vortex.modules.database.Database;
 
 import static arc.Core.app;
 import static mindustry.Vars.netServer;
 import static mindustry.net.Packets.KickReason.serverRestarting;
-import static org.ru.vortex.PluginVars.clientCommands;
-import static org.ru.vortex.PluginVars.serverCommands;
+import static org.ru.vortex.PluginVars.*;
 
 @SuppressWarnings("unused")
 public class Vortex extends Plugin
@@ -48,6 +48,8 @@ public class Vortex extends Plugin
         Database.init();
         Listeners.init();
         Webhook.init();
+
+        communicator = new InterServerCommunicator();
 
         Version.build = -1;
 

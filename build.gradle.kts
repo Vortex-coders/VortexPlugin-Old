@@ -22,12 +22,14 @@ toxopid {
 repositories {
     mavenCentral()
     anukenJitpack()
+    maven { url = uri("https://maven.xpdustry.fr/releases") }
 }
 
 dependencies {
     mindustryDependencies()
 
     compileOnly("org.projectlombok:lombok:1.18.24")
+    compileOnly("fr.xpdustry:javelin-mindustry:1.2.0")
 
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("club.minnced:discord-webhooks:0.8.2")

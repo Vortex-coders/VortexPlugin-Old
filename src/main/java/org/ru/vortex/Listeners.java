@@ -12,6 +12,7 @@ import static mindustry.Vars.netServer;
 import static mindustry.game.EventType.*;
 import static org.ru.vortex.PluginVars.brokenBlocksCache;
 import static org.ru.vortex.PluginVars.placedBlocksCache;
+import static org.ru.vortex.PluginVars.communicator;
 import static org.ru.vortex.modules.Bundler.sendLocalized;
 import static org.ru.vortex.modules.Bundler.sendLocalizedAll;
 import static org.ru.vortex.modules.Webhook.sendFrom;
@@ -34,6 +35,7 @@ public class Listeners
                     sendLocalizedAll("events.player-joined", event.player.name);
                     sendLocalized(event.player, "events.welcome", event.player.name, PluginVars.serverLink);
                     sendInfo("@ joined", event.player.plainName());
+                    communicator.sendConnect(event.player);
                 }
         );
 
@@ -50,7 +52,7 @@ public class Listeners
                                 placedBlocksCache.remove(event.player.id);
                                 setPlayerData(data).block();
                             });
-
+                    communicator.sendDisconnect(event.player);
                     sendInfo("@ left", event.player.plainName());
                     sendLocalizedAll("events.player-left", event.player.plainName());
                 }
@@ -108,6 +110,7 @@ public class Listeners
         netServer.admins.addChatFilter((author, text) ->
         {
             sendFrom(author, text);
+            communicator.sendMessage(author,text);
             return text;
         });
     }
