@@ -27,8 +27,6 @@ repositories {
 dependencies {
     mindustryDependencies()
 
-    compileOnly("org.projectlombok:lombok:1.18.24")
-
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("club.minnced:discord-webhooks:0.8.2")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.19.0")
@@ -36,8 +34,6 @@ dependencies {
     implementation(("io.projectreactor:reactor-core"))
     implementation("org.mongodb:mongodb-driver-reactivestreams:4.8.1")
     implementation(platform("io.projectreactor:reactor-bom:2020.0.24"))
-
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
 }
 
 tasks.withType<JavaCompile> {
@@ -48,10 +44,10 @@ tasks.withType<JavaCompile> {
 }
 
 val metadata = ModMetadata(
-    name = "vortex-plugin",
-    displayName = "Vortex Plugin",
-    author = "lucin, OSPx, nekonya, SSTentaclesSS",
-    description = """
+        name = "vortex-plugin",
+        displayName = "Vortex Plugin",
+        author = "lucin, OSPx, nekonya, SSTentaclesSS",
+        description = """
         A main plugin for vortex servers
 
         Check out our repository:
@@ -63,8 +59,8 @@ val metadata = ModMetadata(
         + nekonya
         + SSTentaclesSS
     """.trimIndent(),
-    version = project.version.toString(),
-    main = "org.ru.vortex.Vortex"
+        version = project.version.toString(),
+        main = "org.ru.vortex.Vortex"
 )
 
 val relocate = tasks.register<ConfigureShadowRelocation>("relocateShadowJar") {

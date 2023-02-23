@@ -4,6 +4,8 @@ import mindustry.gen.Player;
 import org.ru.vortex.PluginVars;
 import org.ru.vortex.modules.database.Database;
 
+import java.util.Objects;
+
 import static org.ru.vortex.PluginVars.discordAuthString;
 
 /**
@@ -57,6 +59,7 @@ public class Oauth
      */
     public static Long getDiscordID(String uuid)
     {
-        return Pipe.apply(Database.getPlayerData(uuid).block()).result().discord;
+        // Ебал в рот Objects.requireNonNull()
+        return Objects.requireNonNull(Database.getPlayerData(uuid).block()).discord;
     }
 }
