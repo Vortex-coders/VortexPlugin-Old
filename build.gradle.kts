@@ -15,7 +15,6 @@ dependencies {
 
     compileOnly("com.github.Anuken.Arc:arc-core:$mindustryVersion")
     compileOnly("com.github.Anuken.MindustryJitpack:core:$mindustryVersion")
-    compileOnly("com.github.Anuken.MindustryJitpack:server:$mindustryVersion")
 
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("club.minnced:discord-webhooks:0.8.2")
@@ -34,6 +33,7 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.jar {
+    archiveFileName.set("VortexPlugin.jar")
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
