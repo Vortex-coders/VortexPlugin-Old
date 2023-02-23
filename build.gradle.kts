@@ -50,10 +50,10 @@ tasks.withType<JavaCompile> {
 }
 
 val metadata = ModMetadata(
-    name = "vortex-plugin",
-    displayName = "Vortex Plugin",
-    author = "lucin, OSPx, nekonya, SSTentaclesSS",
-    description = """
+        name = "vortex-plugin",
+        displayName = "Vortex Plugin",
+        author = "lucin, OSPx, nekonya, SSTentaclesSS",
+        description = """
         A main plugin for vortex servers
 
         Check out our repository:
@@ -65,8 +65,8 @@ val metadata = ModMetadata(
         + nekonya
         + SSTentaclesSS
     """.trimIndent(),
-    version = project.version.toString(),
-    main = "org.ru.vortex.Vortex"
+        version = project.version.toString(),
+        main = "org.ru.vortex.Vortex"
 )
 
 val relocate = tasks.register<ConfigureShadowRelocation>("relocateShadowJar") {

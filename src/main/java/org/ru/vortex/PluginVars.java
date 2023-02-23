@@ -27,11 +27,9 @@ public class PluginVars
             .serializeNulls()
             .disableHtmlEscaping()
             .create();
-
-    public static InterServerCommunicator communicator;
-
     public static final double rtvRatio = 0.6;
     public static final HashSet<String> rtvVotes = new HashSet<>();
+    public static InterServerCommunicator communicator;
     public static boolean rtvEnabled = true;
     public static Config config;
     public static CommandHandler clientCommands, serverCommands;

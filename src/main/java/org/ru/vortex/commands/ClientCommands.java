@@ -6,7 +6,6 @@ import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
-import org.ru.vortex.PluginVars;
 
 import static arc.util.Strings.format;
 import static mindustry.gen.Call.openURI;

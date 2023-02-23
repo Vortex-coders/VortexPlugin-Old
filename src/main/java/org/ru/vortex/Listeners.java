@@ -10,9 +10,7 @@ import java.time.Duration;
 import static arc.util.Log.info;
 import static mindustry.Vars.netServer;
 import static mindustry.game.EventType.*;
-import static org.ru.vortex.PluginVars.brokenBlocksCache;
-import static org.ru.vortex.PluginVars.placedBlocksCache;
-import static org.ru.vortex.PluginVars.communicator;
+import static org.ru.vortex.PluginVars.*;
 import static org.ru.vortex.modules.Bundler.sendLocalized;
 import static org.ru.vortex.modules.Bundler.sendLocalizedAll;
 import static org.ru.vortex.modules.Webhook.sendFrom;
@@ -52,9 +50,11 @@ public class Listeners
                                 placedBlocksCache.remove(event.player.id);
                                 setPlayerData(data).block();
                             });
-                    communicator.sendDisconnect(event.player);
+
+                    info("@ left", event.player.name);
                     sendInfo("@ left", event.player.plainName());
                     sendLocalizedAll("events.player-left", event.player.plainName());
+                    communicator.sendDisconnect(event.player);
                 }
         );
 
@@ -110,7 +110,7 @@ public class Listeners
         netServer.admins.addChatFilter((author, text) ->
         {
             sendFrom(author, text);
-            communicator.sendMessage(author,text);
+            communicator.sendMessage(author, text);
             return text;
         });
     }

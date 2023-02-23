@@ -2,9 +2,7 @@ package org.ru.vortex.modules;
 
 import arc.Events;
 import arc.util.Log;
-import fr.xpdustry.javelin.JavelinEvent;
-import fr.xpdustry.javelin.JavelinPlugin;
-import fr.xpdustry.javelin.JavelinSocket;
+import fr.xpdustry.javelin.*;
 import mindustry.game.EventType;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
@@ -26,25 +24,17 @@ public class InterServerCommunicator
 
             socket.subscribe(IncomeMessageEvent.class, incomeMessageEvent ->
             {
-                if (incomeMessageEvent.getPort() != Administration.Config.port.num())
-                {
-                    Log.debug(incomeMessageEvent.getAuthorName() + " |>>>| " + incomeMessageEvent.getMessage());
-                    //TODO Для люсни и его кода ибо я ня лазить по переводчику
-                }
+                if (incomeMessageEvent.port() != Administration.Config.port.num())
+                    Log.debug(incomeMessageEvent.authorName() + " |>>>| " + incomeMessageEvent.message());
             });
 
             socket.subscribe(AdminResEvent.class, adminResEvent ->
             {
-                if (adminResEvent.port != Administration.Config.port.num())
-                {
-                    return;
-                }
+                if (adminResEvent.port != Administration.Config.port.num()) return;
 
                 Player p = Groups.player.find(player -> player.uuid().equals(adminResEvent.uuid));
-                if (p == null)
-                {
-                    return;
-                }
+                if (p == null) return;
+
                 if (adminResEvent.confirm)
                 {
                     p.admin(true);
@@ -93,89 +83,37 @@ public class InterServerCommunicator
         }
     }
 
-    public static final class MessageSendEvent implements JavelinEvent
+    public record IncomeMessageEvent(String authorName, String message, int port) implements JavelinEvent
     {
-        private final String authorName;
-        private final String message;
-        private final int port;
 
+    }
+
+    public record AdminResEvent(String uuid, boolean confirm, int port) implements JavelinEvent
+    {
+
+    }
+
+    public record MessageSendEvent(String authorName, String message, int port) implements JavelinEvent
+    {
         public MessageSendEvent(String author, String msg)
         {
-            this.authorName = author;
-            this.message = msg;
-            this.port = Administration.Config.port.num();
+            this(author, msg, Administration.Config.port.num());
         }
     }
 
-    public static final class IncomeMessageEvent implements JavelinEvent
+    public record GatesEvent(String user, boolean join, int port) implements JavelinEvent
     {
-        private final String authorName;
-        private final String message;
-        private final int port;
-
-        public IncomeMessageEvent(String author, String msg, int port)
-        {
-            this.authorName = author;
-            this.message = msg;
-            this.port = port;
-        }
-
-        public int getPort()
-        {
-            return this.port;
-        }
-
-        public String getAuthorName()
-        {
-            return authorName;
-        }
-
-        public String getMessage()
-        {
-            return message;
-        }
-    }
-
-
-    public static final class GatesEvent implements JavelinEvent
-    {
-        private final String user;
-        private final boolean join;
-        private final int port;
-
         public GatesEvent(String author, boolean join)
         {
-            this.user = author;
-            this.join = join;
-            this.port = Administration.Config.port.num();
+            this(author, join, Administration.Config.port.num());
         }
     }
 
-    public static final class AdminReqEvent implements JavelinEvent
+    public record AdminReqEvent(String user, String uuid, int port) implements JavelinEvent
     {
-        private final String user;
-        private final String uuid;
-        private final int port;
-
         public AdminReqEvent(String author, String uuid)
         {
-            this.user = author;
-            this.uuid = uuid;
-            this.port = Administration.Config.port.num();
-        }
-    }
-
-    public static final class AdminResEvent implements JavelinEvent
-    {
-        private final String uuid;
-        private final boolean confirm;
-        private final int port;
-
-        public AdminResEvent(String uuid, boolean confirm, int port)
-        {
-            this.uuid = uuid;
-            this.confirm = confirm;
-            this.port = port;
+            this(author, uuid, Administration.Config.port.num());
         }
     }
 }
