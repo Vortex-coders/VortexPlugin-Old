@@ -1,0 +1,10 @@
+{
+    "name": "vortex-plugin",
+    "displayName": "Vortex Plugin",
+    "author": "Vortex-Coders team (https://github.com/Vortex-coders)",
+    "description": "A main plugin for vortex servers.\n + Check out our repository: https://github.com/Vortex-coders/VortexPlugin",
+    "version": "1.0.1",
+    "main": "org.ru.vortex.Vortex",
+    "repo": "Vortex-Coders/VortexPlugin",
+    "java": true
+}
