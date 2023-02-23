@@ -51,8 +51,9 @@ public class Listeners
                                 setPlayerData(data).block();
                             });
 
-                    sendInfo("@ left", event.player.plainName());
+                    info("@ left", event.player.name);
                     sendLocalizedAll("events.player-left", event.player.plainName());
+                    sendInfo("@ left", event.player.plainName());
                 }
         );
 
