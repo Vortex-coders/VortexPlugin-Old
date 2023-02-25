@@ -36,8 +36,8 @@ dependencies {
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 
-    sourceCompatibility = "18"
-    targetCompatibility = "18"
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
 }
 
 tasks.jar {
