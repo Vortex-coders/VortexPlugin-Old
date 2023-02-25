@@ -1,17 +1,17 @@
 package org.ru.vortex;
 
 import arc.Events;
+import arc.util.Log;
 import arc.util.Time;
-import mindustry.gen.Groups;
-import reactor.core.scheduler.Schedulers;
+import org.ru.vortex.modules.Translator;
+import org.ru.vortex.modules.database.models.PlayerData;
 
 import java.time.Duration;
 
 import static arc.util.Log.info;
 import static mindustry.Vars.netServer;
 import static mindustry.game.EventType.*;
-import static org.ru.vortex.PluginVars.brokenBlocksCache;
-import static org.ru.vortex.PluginVars.placedBlocksCache;
+import static org.ru.vortex.PluginVars.cachedPlayerData;
 import static org.ru.vortex.modules.Bundler.sendLocalized;
 import static org.ru.vortex.modules.Bundler.sendLocalizedAll;
 import static org.ru.vortex.modules.Webhook.sendFrom;
@@ -30,6 +30,7 @@ public class Listeners
                 PlayerJoin.class,
                 event ->
                 {
+                    getPlayerData(event.player).subscribe(data -> cachedPlayerData.put(event.player.uuid(), data));
                     info("@ joined", event.player.name);
                     sendLocalizedAll("events.player-joined", event.player.name);
                     sendLocalized(event.player, "events.welcome", event.player.name, PluginVars.serverLink);
@@ -41,15 +42,7 @@ public class Listeners
                 PlayerLeave.class,
                 event ->
                 {
-                    getPlayerData(event.player)
-                            .subscribe(data ->
-                            {
-                                data.blocksBuilt += placedBlocksCache.get(event.player.id);
-                                data.blocksBroken += brokenBlocksCache.get(event.player.id);
-                                brokenBlocksCache.remove(event.player.id);
-                                placedBlocksCache.remove(event.player.id);
-                                setPlayerData(data).block();
-                            });
+                    setPlayerData(cachedPlayerData.remove(event.player.uuid())).subscribe();
 
                     info("@ left", event.player.name);
                     sendLocalizedAll("events.player-left", event.player.plainName());
@@ -61,14 +54,7 @@ public class Listeners
                 GameOverEvent.class,
                 event ->
                 {
-                    getPlayersData(Groups.player)
-                            .publishOn(Schedulers.boundedElastic())
-                            .doOnNext(data ->
-                            {
-                                data.gamesPlayed += 1;
-                                setPlayerData(data).subscribe();
-                            })
-                            .subscribe();
+                    cachedPlayerData.each((uuid, data) -> cachedPlayerData.put(uuid, data.setGamesPlayed(data.gamesPlayed++)));
 
                     sendInfo("Game over!", event.winner.name);
                 }
@@ -106,10 +92,38 @@ public class Listeners
                 }
         );
 
+        Events.on(
+                BlockBuildEndEvent.class,
+                event ->
+                {
+                    if (!event.unit.isPlayer()) return;
+
+                    var player = event.unit.getPlayer();
+
+                    PlayerData data = cachedPlayerData.get(player.uuid());
+
+                    if (event.breaking)
+                    {
+                        data.blocksBroken++;
+                    }
+                    else
+                    {
+                        data.blocksBuilt++;
+                    }
+
+                    cachedPlayerData.put(player.uuid(), data);
+                }
+        );
+
         netServer.admins.addChatFilter((author, text) ->
         {
+            Log.info("&fi@: @", "&lc" + author.plainName(), "&lw" + text);
+
+            author.sendMessage(netServer.chatFormatter.format(author, text), author, text);
+            Translator.translate(author, text);
+
             sendFrom(author, text);
-            return text;
+            return null;
         });
     }
 }

@@ -6,6 +6,7 @@ import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
+import org.ru.vortex.modules.Bundler;
 
 import static arc.util.Strings.format;
 import static mindustry.gen.Call.openURI;
@@ -15,6 +16,7 @@ import static org.ru.vortex.utils.Checks.ifTimeoutCheck;
 import static org.ru.vortex.utils.Oauth.getAuthLink;
 import static org.ru.vortex.utils.Oauth.isAuthorized;
 import static org.ru.vortex.utils.Timeouts.timeout;
+import static org.ru.vortex.utils.Utils.findTranslatorLanguage;
 
 public class ClientCommands
 {
@@ -30,6 +32,45 @@ public class ClientCommands
                     if (isAuthorized(player)) return;
 
                     openURI(player.con, getAuthLink(player));
+                }
+        );
+
+        register(
+                "tr",
+                (args, player) ->
+                {
+                    var data = cachedPlayerData.get(player.uuid());
+
+                    switch (args[0].toLowerCase())
+                    {
+                    case "off" ->
+                    {
+                        data.translatorLanguage = "off";
+                        Bundler.sendLocalized(player, "commands.tr.off");
+                    }
+                    case "auto" ->
+                    {
+                        var lang = findTranslatorLanguage(player.locale);
+                        data.translatorLanguage = lang == null ? "en" : lang;
+
+                        Bundler.sendLocalized(player, "commands.tr.success", translatorLanguages.get(data.translatorLanguage));
+                    }
+                    default ->
+                    {
+                        var lang = findTranslatorLanguage(args[0]);
+                        if (lang == null)
+                        {
+                            Bundler.sendLocalized(player, "commands.tr.not-found");
+                            break;
+                        }
+
+                        data.translatorLanguage = lang;
+
+                        Bundler.sendLocalized(player, "commands.tr.success", translatorLanguages.get(data.translatorLanguage));
+                    }
+                    }
+
+                    cachedPlayerData.put(player.uuid(), data);
                 }
         );
 

@@ -1,10 +1,12 @@
 package org.ru.vortex;
 
-import arc.struct.IntIntMap;
+import arc.struct.ObjectMap;
+import arc.struct.OrderedMap;
 import arc.util.CommandHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.ru.vortex.modules.Config;
+import org.ru.vortex.modules.database.models.PlayerData;
 
 import java.util.HashSet;
 
@@ -13,8 +15,8 @@ import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_DASHES;
 public class PluginVars
 {
 
-    public static final IntIntMap placedBlocksCache = new IntIntMap(), brokenBlocksCache = new IntIntMap();
-    public static final String translationApiUrl = "";
+    public static final ObjectMap<String, PlayerData> cachedPlayerData = new ObjectMap<>();
+    public static final OrderedMap<String, String> translatorLanguages = new OrderedMap<>();
     public static final String serverLink = "https://discord.gg/pTtQTUQM68";
 
     public static final String discordAuthString =

@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import static org.ru.vortex.PluginVars.config;
+import static org.ru.vortex.PluginVars.translatorLanguages;
 import static org.ru.vortex.modules.Bundler.getLocalized;
 
 public class Utils
@@ -47,4 +48,10 @@ public class Utils
     {
         con.kick(Strings.format(getLocalized(new Locale(locale), key), objects));
     }
+
+    public static String findTranslatorLanguage(String locale)
+    {
+        return translatorLanguages.orderedKeys().find(locale::startsWith);
+    }
+
 }
