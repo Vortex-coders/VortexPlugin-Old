@@ -18,6 +18,8 @@ public class Config
     public String description = "";
     public String mongoUrl = "";
     public String webhookUrl = "";
+    public String hubIp = "";
+    public int hubPort = 6567;
     public long webhookThread = 0L;
     public Gamemode gamemode = survival;
 

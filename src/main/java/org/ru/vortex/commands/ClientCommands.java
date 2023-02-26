@@ -2,10 +2,10 @@ package org.ru.vortex.commands;
 
 import arc.Events;
 import arc.util.CommandHandler.CommandRunner;
+import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.game.Team;
-import mindustry.gen.Groups;
-import mindustry.gen.Player;
+import mindustry.gen.*;
 import org.ru.vortex.modules.Bundler;
 
 import static arc.util.Strings.format;
@@ -107,6 +107,22 @@ public class ClientCommands
 
                     sendLocalizedAll("commands.rtv.vote-passed");
                     Events.fire(new EventType.GameOverEvent(Team.crux));
+                }
+        );
+
+        register(
+                "hub",
+                (args, player) ->
+                {
+                    if (!config.hubIp.isEmpty())
+                    {
+                        Vars.net.pingHost(
+                                config.hubIp,
+                                config.hubPort,
+                                host -> Call.connect(player.con, host.address, host.port),
+                                e -> getLocalized(player, "commands.hub.error")
+                        );
+                    }
                 }
         );
     }
